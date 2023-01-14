@@ -1,11 +1,15 @@
-import './App.scss';
-import Routing from './Routing';
+import "./App.scss";
+import Routing from "./Routing";
+import { FullScreen, useFullScreenHandle } from "react-full-screen";
 
 function App() {
+  const fullScreenHandle = useFullScreenHandle();
   return (
-    <div className="App">
-      <Routing/>
-    </div>
+    <FullScreen handle={fullScreenHandle}>
+      <div className="App">
+        <Routing fullScreenHandle={fullScreenHandle}/>
+      </div>
+    </FullScreen>
   );
 }
 
