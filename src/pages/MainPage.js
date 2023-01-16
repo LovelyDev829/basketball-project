@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./MainPage.scss";
 import { useNavigate } from "react-router-dom";
-import fieldLine from "../assets/field-line.png";
+import fieldLine from "../assets/field-line-with-logo.png";
 import fieldWithoutLine from "../assets/field-without-line.png";
 // import { ReactComponent as ArrowLeftIcon } from "../assets/svg/arrow-left.svg";
 import { ReactComponent as MenuIcon } from "../assets/svg/menu.svg";
