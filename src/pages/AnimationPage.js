@@ -23,7 +23,6 @@ import { ReactComponent as BallIcon } from "../assets/svg/basketball.svg";
 import { ReactComponent as TrashIcon } from "../assets/svg/trash.svg";
 import { ReactComponent as RotateIcon } from "../assets/svg/rotate-ccw.svg";
 
-import logo from "../assets/logo.png";
 import html2canvas from "html2canvas";
 
 function AnimationPage({
@@ -59,106 +58,104 @@ function AnimationPage({
   };
   return (
     <div className="AnimationPage">
-      <div className="logo">
-        <img src={logo} alt="" />
-        <img src={logo} alt="" />
-      </div>
-      <div className="botton-line">
-        <div className="button-group">
-          <div className="button" onClick={() => navigate("/main")}>
-            <ArrowLeftIcon />
+      <div className="board">
+        <div className="button-line">
+          <div className="button-group">
+            <div className="button" onClick={() => navigate("/main")}>
+              <ArrowLeftIcon />
+            </div>
+            <div className="button">
+              <MenuIcon />
+            </div>
+            <div className="button">
+              <LinkIcon />
+            </div>
+            <div
+              className="button"
+              onClick={() =>
+                exportAsImage(
+                  document.getElementById("image-to-download"),
+                  "basketball-screen",
+                  true
+                )}
+            >
+              <CameraIcon />
+            </div>
+            <div className="button">
+              <DownloadIcon />
+            </div>
+            <div className="button">
+              <BookmarkIcon />
+            </div>
+            <div
+              className={fieldLineFlag ? "button" : "button clicked"}
+              onClick={() => {
+                setFieldLineFlag(!fieldLineFlag);
+              }}
+            >
+              <FieldIcon />
+            </div>
+            <div
+              className={!fullScreenFlag ? "button" : "button clicked"}
+              onClick={() => {
+                if (fullScreenFlag) fullScreenHandle.exit();
+                else fullScreenHandle.enter();
+                setFullScreenFlag(!fullScreenFlag);
+              }}
+            >
+              {!fullScreenFlag ? <MaximizeIcon /> : <MinimizeIcon />}
+            </div>
           </div>
-          <div className="button">
-            <MenuIcon />
-          </div>
-          <div className="button">
-            <LinkIcon />
-          </div>
-          <div
-            className="button"
-            onClick={() =>
-              exportAsImage(
-                document.getElementById("image-to-download"),
-                "basketball-screen",
-                true
-              )}
-          >
-            <CameraIcon />
-          </div>
-          <div className="button">
-            <DownloadIcon />
-          </div>
-          <div className="button">
-            <BookmarkIcon />
-          </div>
-          <div
-            className={fieldLineFlag ? "button" : "button clicked"}
-            onClick={() => {
-              setFieldLineFlag(!fieldLineFlag);
-            }}
-          >
-            <FieldIcon />
-          </div>
-          <div
-            className={!fullScreenFlag ? "button" : "button clicked"}
-            onClick={() => {
-              if (fullScreenFlag) fullScreenHandle.exit();
-              else fullScreenHandle.enter();
-              setFullScreenFlag(!fullScreenFlag);
-            }}
-          >
-            {!fullScreenFlag ? <MaximizeIcon /> : <MinimizeIcon />}
-          </div>
-        </div>
-        <div className="button-group">
-          <div className="button">
-            <PlayIcon />
-          </div>
-          <div className="button">
-            <PlayCircleIcon />
-          </div>
-          <div className="button">
-            <PauseIcon />
-          </div>
-          <div className="button">
-            <SquareIcon />
-          </div>
-          <div className="button">
-            <RepeatIcon />
+          <div className="button-group">
+            <div className="button">
+              <PlayIcon />
+            </div>
+            <div className="button">
+              <PlayCircleIcon />
+            </div>
+            <div className="button">
+              <PauseIcon />
+            </div>
+            <div className="button">
+              <SquareIcon />
+            </div>
+            <div className="button">
+              <RepeatIcon />
+            </div>
           </div>
         </div>
-      </div>
-      <div id="image-to-download" className="image-to-download">
-        <img
-          src={fieldLineFlag ? fieldLine : fieldWithoutLine}
-          alt="BACKGROUND"
-        />
-      </div>
-      <div className="botton-line">
-        <div className="circles">
-          <div className="circle red">1</div>
-          <div className="circle blue">1</div>
-          <div className="circle brown">1</div>
-          <div className="circle yellow">1</div>
-          <div className="circle green">1</div>
-          <div className="circle white">1</div>
-          <div className="circle grey">1</div>
-          <div className="circle black">1</div>
+        <div id="image-to-download" className="image-to-download">
+          <img
+            src={fieldLineFlag ? fieldLine : fieldWithoutLine}
+            alt="BACKGROUND"
+          />
+        </div>
+        <div className="button-line">
+          <div className="circles">
+            <div className="circle red">1</div>
+            <div className="circle blue">1</div>
+            <div className="circle brown">1</div>
+            <div className="circle yellow">1</div>
+            <div className="circle green">1</div>
+            <div className="circle white">1</div>
+            <div className="circle grey">1</div>
+            <div className="circle black">1</div>
 
-          <div className="point purple" />
-          <div className="point orange" />
-          <div className="point springgreen" />
-          <div className="point cornflowerblue" />
-          <div className="ball">
-            <BallIcon />
+            <div className="point purple" />
+            <div className="point orange" />
+            <div className="point springgreen" />
+            <div className="point cornflowerblue" />
+            <div className="ball">
+              <BallIcon />
+            </div>
           </div>
-        </div>
-        <div className="button-group">
-          <div className="button">
-            <RotateIcon />
-          </div>
-          <div className="button">
-            <TrashIcon />
+          <div className="button-group">
+            <div className="button">
+              <RotateIcon />
+            </div>
+            <div className="button">
+              <TrashIcon />
+            </div>
           </div>
         </div>
       </div>

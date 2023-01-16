@@ -5,21 +5,6 @@
     left: 50%;
     transform: translate(-50%, -50%);
     box-sizing: border-box;
-    .logo{
-        img{
-            position: absolute;
-            top: 45%;
-            height: 100px;
-            &:first-child{
-                left: -300px;
-                transform: rotate(0.25turn);
-            }
-            &:last-child{
-                right: -300px;
-                transform: rotate(0.75turn);
-            }
-        }
-    }
     .image-to-download{
         width: 100%;
         padding: 20px;
@@ -28,7 +13,7 @@
             width: 100%;
         }
     }
-    .botton-line{
+    .button-line{
         // background-color: aqua;
         // height: 40px;
         width: 100%;
