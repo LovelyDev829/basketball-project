@@ -57,7 +57,6 @@ function MainPage({
   });
   useLayoutEffect(()=>{
     const imageWidth = window.innerWidth
-    // console.log("imageWidth", imageWidth)
     // setPositionDiff([30-((5/1520)*(1800-imageWidth)), 105-((3/152)*(1920-imageWidth))])
     if(imageWidth > 1266) setPositionDiff([31, 105])
     else if(imageWidth > 1170) setPositionDiff([31, 120-(0.05*(imageWidth-1170))])
@@ -98,7 +97,6 @@ function MainPage({
         mousePosX: mousePosX,
         mousePosY: mousePosY
       }
-      // console.log("newObject", newObject)
       newCircles.push(newObject)
     }
   }
@@ -140,7 +138,6 @@ function MainPage({
           onTouchMove={(e)=>{
             setMousePosX(e.changedTouches[0].clientX)
             setMousePosY(e.changedTouches[0].clientY)
-            console.log(e.changedTouches[0].clientX)
           }}>
           <div id="new-circles">
             {
@@ -265,7 +262,7 @@ function MainPage({
           </div>
           <div className="button-line">
             <div className="circles">
-              <div className="circle red" onMouseDown={() => {console.log("MouseDown"); circlePicked(true, -1, "red")}} onTouchStart={() => {console.log("TouchStart");circlePicked(true, -1, "red")}}>1</div>
+              <div className="circle red" onMouseDown={() => circlePicked(true, -1, "red")} onTouchStart={() => circlePicked(true, -1, "red")}>1</div>
               <div className="circle blue" onMouseDown={() => circlePicked(true, -1, "blue")} onTouchStart={() => circlePicked(true, -1, "blue")}>1</div>
               <div className="circle brown" onMouseDown={() => circlePicked(true, -1, "brown")} onTouchStart={() => circlePicked(true, -1, "brown")}>1</div>
               <div className="circle yellow" onMouseDown={() => circlePicked(true, -1, "yellow")} onTouchStart={() => circlePicked(true, -1, "yellow")}>1</div>

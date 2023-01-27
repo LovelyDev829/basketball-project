@@ -98,8 +98,8 @@
                         background-color: rgba(43, 44, 75, 0.856);        /////////////////////////////////////////////////
                         border-radius: 9px;
                         position: absolute;
-                        top: 10px;
-                        left: 25px;
+                        top: 26px;
+                        // left: 25px;
                         padding: 10px 20px 10px 20px;
                         width: max-content;
                         z-index: 5;
@@ -456,8 +456,7 @@
                         border-radius: 40px;
                         margin: 0px 3px 0px 3px;
                         .drop-menu{
-                            top: 5px;
-                            left: 15px;
+                            top: 20px;
                             padding: 7px 15px 7px 15px;
                         }
                         .name{
@@ -696,8 +695,7 @@
                         margin: 0px 2px 0px 2px;
                         border-width: 1.8px !important;
                         .drop-menu{
-                            top: 5px;
-                            left: 10px;
+                            top: 15px;
                             padding: 7px 15px 7px 15px;
                         }
                         .name{
