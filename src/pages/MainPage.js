@@ -123,7 +123,7 @@ function MainPage({
         <div className="user-avatar">
           <UserIcon />
           Williams
-          {window.innerWidth}
+          {/* {window.innerWidth} */}
         </div>
       </div>
       <div className="main">
