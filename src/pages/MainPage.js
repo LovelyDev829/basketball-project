@@ -58,8 +58,13 @@ function MainPage({
   useLayoutEffect(()=>{
     const imageWidth = window.innerWidth
     // console.log("imageWidth", imageWidth)
-    setPositionDiff([30-((5/1520)*(1800-imageWidth)), 105-((3/152)*(1920-imageWidth))])
-  },[]);
+    // setPositionDiff([30-((5/1520)*(1800-imageWidth)), 105-((3/152)*(1920-imageWidth))])
+    if(imageWidth > 1266) setPositionDiff([31, 105])
+    else if(imageWidth > 1170) setPositionDiff([31, 120-(0.05*(imageWidth-1170))])
+    else if(imageWidth > 872) setPositionDiff([31, 110-(0.1*(imageWidth-872))])
+    else if(imageWidth > 480) setPositionDiff([29, 80])
+    else setPositionDiff([24, 75])
+  }, []);
   const exportAsImage = async (element, imageFileName, downloadFlag) => {
     const canvas = await html2canvas(element);
     const image = canvas.toDataURL("image/png", 1.0);
