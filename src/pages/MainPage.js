@@ -138,33 +138,44 @@ function MainPage({
           onTouchMove={(e)=>{
             setMousePosX(e.changedTouches[0].clientX)
             setMousePosY(e.changedTouches[0].clientY)
+          }}
+          onTouchStart={(e)=>{
+            setMousePosX(e.changedTouches[0].clientX)
+            setMousePosY(e.changedTouches[0].clientY)
           }}>
           <div id="new-circles">
             {
               newCircles.map((item, index) => {
                 const defaultStyle = { top: `${item?.mousePosY - positionDiff[1]}px`, left: `${item?.mousePosX - positionDiff[0]}px` }
                 const dragStyle = { top: `${mousePosY - positionDiff[1]}px`, left: `${mousePosX - positionDiff[0]}px` }
+                var contextFlag = false
+                // console.log("dragItem", dragItem)
+                // console.log("index", index)
+                // console.log("newCircles.length", newCircles.length)
                 return (
                   <div className={'circle ' + item?.color} key={"new-circle-" + index}
                     style={(dragItem === index || (dragItem === -1 && index === newCircles.length - 1)) ? dragStyle : defaultStyle}
+                    // style={defaultStyle}
                     onMouseDown={(e) => {
                       if (e.button === 2) return
                       circlePicked(false, index, "")
                     }}
-                    onTouchStart={(e) => {
-                      if (e.button === 2) return
+                    onTouchStart={() => {
+                      if (contextFlag) return
                       circlePicked(false, index, "")
                     }}
                     onContextMenu={(e) => {
+                      contextFlag = true
                       e.preventDefault()
                       setDropMenuItem(index)
                     }}
-                    onMouseLeave={(e) => {
+                    onMouseLeave={() => {
                       setDropMenuItem(-1)
                     }}
-                    onTouchEnd={(e) => {
-                      setDropMenuItem(-1)
-                    }}>
+                    onTouchEnd={()=>{
+                      contextFlag = false
+                    }}
+                    >
                     {item?.number}
                     <div className={(dropMenuItem === index) ? "drop-menu" : "hidden"}>
                       <p>Number <input min={1} type="number" value={item?.number} onChange={(e) => {
