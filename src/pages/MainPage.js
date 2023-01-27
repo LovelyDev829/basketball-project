@@ -58,7 +58,7 @@ function MainPage({
   useLayoutEffect(()=>{
     const imageWidth = window.innerWidth
     // console.log("imageWidth", imageWidth)
-    setPositionDiff([30-((5/1400)*(1800-imageWidth)), 105-((3/140)*(1800-imageWidth))])
+    setPositionDiff([30-((5/1520)*(1800-imageWidth)), 105-((3/152)*(1920-imageWidth))])
   },[]);
   const exportAsImage = async (element, imageFileName, downloadFlag) => {
     const canvas = await html2canvas(element);
@@ -117,6 +117,7 @@ function MainPage({
         <div className="user-avatar">
           <UserIcon />
           Williams
+          {window.innerWidth}
         </div>
       </div>
       <div className="main">
