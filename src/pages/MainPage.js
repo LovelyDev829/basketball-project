@@ -125,8 +125,8 @@ function MainPage({
           onTouchEnd={() => circleReleased()}
           onMouseLeave={() => circleReleased()}
           onMouseMove={(e) => {
-            setMousePosX(e.clientX)
-            setMousePosY(e.clientY)
+            setMousePosX(e.clientX);
+            setMousePosY(e.clientY);
           }}
           onTouchMove={(e)=>{
             setMousePosX(e.changedTouches[0].clientX)
