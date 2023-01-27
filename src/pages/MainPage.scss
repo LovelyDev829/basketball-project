@@ -145,6 +145,7 @@
                     }
                 }
                 .point{
+                    position: absolute;
                     width: 20px;
                     height: 20px;
                     border-radius: 20px;
@@ -167,6 +168,7 @@
                     }
                 }
                 .ball{
+                    position: absolute;
                     width: 30px;
                     height: 30px;
                     border-radius: 30px;

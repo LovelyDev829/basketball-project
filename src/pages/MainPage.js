@@ -40,30 +40,34 @@ function MainPage({
   fullScreenHandle
 }) {
   const navigate = useNavigate();
-  const [dragItem, setDragItem] = useState(-2)
+  const [dragCircleItem, setDragCircleItem] = useState(-2)
+  const [dragPointItem, setDragPointItem] = useState(-2)
+  const [dragBallItem, setDragBallItem] = useState(-2)
+
   const [dropMenuItem, setDropMenuItem] = useState(-1)
   const [mousePosX, setMousePosX] = useState(0)
   const [mousePosY, setMousePosY] = useState(0)
+  
   const [newCircles, setNewCircles] = useState([])
-  const [positionDiff, setPositionDiff] = useState([25, 75])
-  // const [inputNumber, setInputNumber] = useState(1)
-  // const [inputName, setInputName] = useState("")
+  const [newPoints, setNewPoints] = useState([])
+  const [newBalls, setNewBalls] = useState([])
+  
+  const [positionCircleDiff, setPositionCircleDiff] = useState([25, 75])
+  const [positionPointDiff, setPositionPointDiff] = useState([25, 75])
 
   useEffect(() => {
     if (!document.mozFullScreen && !document.webkitIsFullScreen)
       setFullScreenFlag(false);
     else setFullScreenFlag(true);
-    // const imageWidth = document.getElementById("image-to-download").offsetWidth
   });
   useLayoutEffect(()=>{
     const imageWidth = window.innerWidth
-    // setPositionDiff([30-((5/1520)*(1800-imageWidth)), 105-((3/152)*(1920-imageWidth))])
-    if(imageWidth > 1266) setPositionDiff([31, 105])
-    else if(imageWidth > 1170) setPositionDiff([31, 120-(0.05*(imageWidth-1170))])
-    else if(imageWidth > 1023) setPositionDiff([31, 80])
-    else if(imageWidth > 872) setPositionDiff([31, 110-(0.2*(imageWidth-872))])
-    else if(imageWidth > 480) setPositionDiff([29, 80])
-    else setPositionDiff([24, 75])
+    if(imageWidth > 1266)      {setPositionCircleDiff([31, 105]);                             setPositionPointDiff([24, 95])}
+    else if(imageWidth > 1170) {setPositionCircleDiff([31, 120-((3/19)*(imageWidth-1170))]);  setPositionPointDiff([24, 110-((3/19)*(imageWidth-1170))])}
+    else if(imageWidth > 1040) {setPositionCircleDiff([31, 80]);                              setPositionPointDiff([25, 72])}
+    else if(imageWidth > 872)  {setPositionCircleDiff([31, 110-((31/167)*(imageWidth-873))]); setPositionPointDiff([25, 103-((31/167)*(imageWidth-873))])}
+    else if(imageWidth > 480)  {setPositionCircleDiff([29, 80]);                              setPositionPointDiff([23, 73])}
+    else                       {setPositionCircleDiff([24, 75]);                              setPositionPointDiff([20, 71])}
   }, []);
   window.scrollTo(0, 1);
   const exportAsImage = async (element, imageFileName, downloadFlag) => {
@@ -86,7 +90,7 @@ function MainPage({
   };
   const circlePicked = (creatingFlag, index, color) => {
     if (dropMenuItem > -1) return
-    setDragItem(index)
+    setDragCircleItem(index)
     setDropMenuItem(-1)
     if (creatingFlag) {
       const newObject = {
@@ -100,8 +104,8 @@ function MainPage({
     }
   }
   const circleReleased = () => {
-    if (dragItem === -2) return
-    const releasingId = dragItem > -1 ? dragItem : newCircles?.length - 1
+    if (dragCircleItem === -2) return
+    const releasingId = dragCircleItem > -1 ? dragCircleItem : newCircles?.length - 1
     const nextNewCircles = newCircles?.map((item, index) => {
       if (index === releasingId) {
         return {
@@ -113,7 +117,60 @@ function MainPage({
       else return item
     })
     setNewCircles(nextNewCircles)
-    setDragItem(-2)
+    setDragCircleItem(-2)
+  }
+  const pointPicked = (creatingFlag, index, color) => {
+    setDragPointItem(index)
+    if (creatingFlag) {
+      const newObject = {
+        color: color,
+        mousePosX: mousePosX,
+        mousePosY: mousePosY
+      }
+      newPoints.push(newObject)
+    }
+  }
+  const pointReleased = () => {
+    if (dragPointItem === -2) return
+    const releasingId = dragPointItem > -1 ? dragPointItem : newPoints?.length - 1
+    const nextNewPoints = newPoints?.map((item, index) => {
+      if (index === releasingId) {
+        return {
+          ...item,
+          mousePosX: mousePosX,
+          mousePosY: mousePosY
+        };
+      }
+      else return item
+    })
+    setNewPoints(nextNewPoints)
+    setDragPointItem(-2)
+  }
+  const ballPicked = (creatingFlag, index) => {
+    setDragBallItem(index)
+    if (creatingFlag) {
+      const newObject = {
+        mousePosX: mousePosX,
+        mousePosY: mousePosY
+      }
+      newBalls.push(newObject)
+    }
+  }
+  const ballReleased = () => {
+    if (dragBallItem === -2) return
+    const releasingId = dragBallItem > -1 ? dragBallItem : newBalls?.length - 1
+    const nextNewBalls = newBalls?.map((item, index) => {
+      if (index === releasingId) {
+        return {
+          ...item,
+          mousePosX: mousePosX,
+          mousePosY: mousePosY
+        };
+      }
+      else return item
+    })
+    setNewBalls(nextNewBalls)
+    setDragBallItem(-2)
   }
   return (
     <div className="MainPage">
@@ -122,14 +179,13 @@ function MainPage({
         <div className="user-avatar">
           <UserIcon />
           Williams
-          {/* {window.innerWidth} */}
         </div>
       </div>
       <div className="main">
         <div className="board"
-          onMouseUp={() => circleReleased()}
-          onTouchEnd={() => circleReleased()}
-          onMouseLeave={() => circleReleased()}
+          onMouseUp={() => {circleReleased(); pointReleased(); ballReleased()}}
+          onTouchEnd={() => {circleReleased(); pointReleased(); ballReleased()}}
+          onMouseLeave={() => {circleReleased(); pointReleased(); ballReleased()}}
           onMouseMove={(e) => {
             setMousePosX(e.clientX);
             setMousePosY(e.clientY);
@@ -145,12 +201,12 @@ function MainPage({
           <div id="new-circles">
             {
               newCircles?.map((item, index) => {
-                const defaultStyle = { top: `${item?.mousePosY - positionDiff[1]}px`, left: `${item?.mousePosX - positionDiff[0]}px` }
-                const dragStyle = { top: `${mousePosY - positionDiff[1]}px`, left: `${mousePosX - positionDiff[0]}px` }
+                const defaultStyle = { top: `${item?.mousePosY - positionCircleDiff[1]}px`, left: `${item?.mousePosX - positionCircleDiff[0]}px` }
+                const dragStyle = { top: `${mousePosY - positionCircleDiff[1]}px`, left: `${mousePosX - positionCircleDiff[0]}px` }
                 var contextFlag = false
                 return (
                   <div className={'circle ' + item?.color} key={"new-circle-" + index}
-                    style={(dragItem === index || (dragItem === -1 && index === newCircles?.length - 1)) ? dragStyle : defaultStyle}
+                    style={(dragCircleItem === index || (dragCircleItem === -1 && index === newCircles?.length - 1)) ? dragStyle : defaultStyle}
                     // style={defaultStyle}
                     onMouseDown={(e) => {
                       if (e.button === 2) return
@@ -170,8 +226,7 @@ function MainPage({
                     }}
                     onTouchEnd={()=>{
                       contextFlag = false
-                    }}
-                    >
+                    }}>
                     {item?.number}
                     <div className={(dropMenuItem === index) ? "drop-menu" : "hidden"}>
                       <p>Number <input min={1} type="number" value={item?.number} onChange={(e) => {
@@ -212,6 +267,67 @@ function MainPage({
                 )
               })
             }
+            {
+              newPoints?.map((item, index) => {
+                const defaultStyle = { top: `${item?.mousePosY - positionPointDiff[1]}px`, left: `${item?.mousePosX - positionPointDiff[0]}px` }
+                const dragStyle = { top: `${mousePosY - positionPointDiff[1]}px`, left: `${mousePosX - positionPointDiff[0]}px` }
+                var contextFlag = false
+                return (
+                  <div className={'point ' + item?.color} key={"new-point-" + index}
+                    style={(dragPointItem === index || (dragPointItem === -1 && index === newPoints?.length - 1)) ? dragStyle : defaultStyle}
+                    // style={defaultStyle}
+                    onMouseDown={(e) => {
+                      if (e.button === 2) return
+                      pointPicked(false, index, "")
+                    }}
+                    onTouchStart={() => {
+                      if (contextFlag) return
+                      pointPicked(false, index, "")
+                    }}
+                    onContextMenu={(e) => {
+                      contextFlag = true
+                      e.preventDefault()
+                      //Delete...................................................................
+                      setNewPoints([...newPoints?.slice(0, index), ...newPoints?.slice(index + 1)])
+                    }}
+                    onTouchEnd={()=>{
+                      contextFlag = false
+                    }}>
+                  </div>
+                )
+              })
+            }
+            {
+              newBalls?.map((item, index) => {
+                const defaultStyle = { top: `${item?.mousePosY - positionPointDiff[1]}px`, left: `${item?.mousePosX - positionPointDiff[0]}px` }
+                const dragStyle = { top: `${mousePosY - positionPointDiff[1]}px`, left: `${mousePosX - positionPointDiff[0]}px` }
+                var contextFlag = false
+                return (
+                  <div className='ball' key={"new-ball-" + index}
+                    style={(dragBallItem === index || (dragBallItem === -1 && index === newBalls?.length - 1)) ? dragStyle : defaultStyle}
+                    // style={defaultStyle}
+                    onMouseDown={(e) => {
+                      if (e.button === 2) return
+                      ballPicked(false, index)
+                    }}
+                    onTouchStart={() => {
+                      if (contextFlag) return
+                      ballPicked(false, index)
+                    }}
+                    onContextMenu={(e) => {
+                      contextFlag = true
+                      e.preventDefault()
+                      //Delete...................................................................
+                      setNewBalls([...newBalls?.slice(0, index), ...newBalls?.slice(index + 1)])
+                    }}
+                    onTouchEnd={()=>{
+                      contextFlag = false
+                    }}>
+                      <BallIcon />
+                  </div>
+                )
+              })
+            }
           </div>
           <div className="button-line">
             <div className="button-group">
@@ -232,9 +348,6 @@ function MainPage({
               >
                 <DownloadIcon />
               </div>
-              {/* <div className="button">
-              <BookmarkIcon />
-            </div> */}
               <div
                 className={fieldLineFlag ? "button" : "button clicked"}
                 onClick={() => {
@@ -286,11 +399,11 @@ function MainPage({
               <div className="circle grey" onMouseDown={() => circlePicked(true, -1, "grey")} onTouchStart={() => circlePicked(true, -1, "grey")}></div>
               <div className="circle black" onMouseDown={() => circlePicked(true, -1, "black")} onTouchStart={() => circlePicked(true, -1, "black")}></div>
 
-              <div className="point purple" />
-              <div className="point orange" />
-              <div className="point springgreen" />
-              <div className="point cornflowerblue" />
-              <div className="ball">
+              <div className="point purple" onMouseDown={() => pointPicked(true, -1, "purple")} onTouchStart={() => pointPicked(true, -1, "purple")}/>
+              <div className="point orange" onMouseDown={() => pointPicked(true, -1, "orange")} onTouchStart={() => pointPicked(true, -1, "orange")}/>
+              <div className="point springgreen" onMouseDown={() => pointPicked(true, -1, "springgreen")} onTouchStart={() => pointPicked(true, -1, "springgreen")}/>
+              <div className="point cornflowerblue" onMouseDown={() => pointPicked(true, -1, "cornflowerblue")} onTouchStart={() => pointPicked(true, -1, "cornflowerblue")}/>
+              <div className="ball" onMouseDown={() => ballPicked(true, -1)} onTouchStart={() => ballPicked(true, -1)}>
                 <BallIcon />
               </div>
             </div>
@@ -298,7 +411,7 @@ function MainPage({
               <div className="button">
                 <RotateIcon />
               </div>
-              <div className="button" onClick={() => setNewCircles([])}>
+              <div className="button" onClick={() => {setNewCircles([]); setNewPoints([]); setNewBalls([])}}>
                 <TrashIcon />
               </div>
             </div>
