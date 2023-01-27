@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import "./MainPage.scss";
 import { useNavigate } from "react-router-dom";
 import fieldLine from "../assets/field-line-with-logo.png";
@@ -32,7 +32,6 @@ import { ReactComponent as UserIcon } from "../assets/svg/user.svg";
 
 import mainLogo from "../assets/logo.png";
 import html2canvas from "html2canvas";
-
 function MainPage({
   fieldLineFlag,
   setFieldLineFlag,
@@ -41,18 +40,26 @@ function MainPage({
   fullScreenHandle
 }) {
   const navigate = useNavigate();
-  // const [landFlag, setLandFlag] = useState(false)
-  // useEffect(()=>{
-  //   const height = window.innerHeight
-  //   const width = window.innerWidth
-  //   if(height > width) setLandFlag(false)
-  //   else setLandFlag(true)
-  // }, [landFlag])
+  const [dragItem, setDragItem] = useState(-2)
+  const [dropMenuItem, setDropMenuItem] = useState(-1)
+  const [mousePosX, setMousePosX] = useState(0)
+  const [mousePosY, setMousePosY] = useState(0)
+  const [newCircles, setNewCircles] = useState([])
+  const [positionDiff, setPositionDiff] = useState([25, 75])
+  // const [inputNumber, setInputNumber] = useState(1)
+  // const [inputName, setInputName] = useState("")
+
   useEffect(() => {
     if (!document.mozFullScreen && !document.webkitIsFullScreen)
       setFullScreenFlag(false);
     else setFullScreenFlag(true);
+    // const imageWidth = document.getElementById("image-to-download").offsetWidth
   });
+  useLayoutEffect(()=>{
+    const imageWidth = window.innerWidth
+    // console.log("imageWidth", imageWidth)
+    setPositionDiff([30-((5/1400)*(1800-imageWidth)), 105-((3/140)*(1800-imageWidth))])
+  },[]);
   const exportAsImage = async (element, imageFileName, downloadFlag) => {
     const canvas = await html2canvas(element);
     const image = canvas.toDataURL("image/png", 1.0);
@@ -71,6 +78,38 @@ function MainPage({
 
     fakeLink.remove();
   };
+  const circlePicked = (creatingFlag, index, color) => {
+    if (dropMenuItem > -1) return
+    setDragItem(index)
+    setDropMenuItem(-1)
+    if (creatingFlag) {
+      const newObject = {
+        color: color,
+        number: 1,
+        name: "",
+        mousePosX: mousePosX,
+        mousePosY: mousePosY
+      }
+      // console.log("newObject", newObject)
+      newCircles.push(newObject)
+    }
+  }
+  const circleReleased = () => {
+    if (dragItem === -2) return
+    const releasingId = dragItem > -1 ? dragItem : newCircles.length - 1
+    const nextNewCircles = newCircles.map((item, index) => {
+      if (index === releasingId) {
+        return {
+          ...item,
+          mousePosX: mousePosX,
+          mousePosY: mousePosY
+        };
+      }
+      else return item
+    })
+    setNewCircles(nextNewCircles)
+    setDragItem(-2)
+  }
   return (
     <div className="MainPage">
       <div className="top-user-info">
@@ -81,7 +120,66 @@ function MainPage({
         </div>
       </div>
       <div className="main">
-        <div className="board">
+        <div className="board"
+          onMouseUp={() => circleReleased()}
+          onMouseLeave={() => circleReleased()}
+          onMouseMove={(e) => {
+            setMousePosX(e.clientX)
+            setMousePosY(e.clientY)
+
+          }}>
+          <div id="new-circles">
+            {
+              newCircles.map((item, index) => {
+                const defaultStyle = { top: `${item?.mousePosY - positionDiff[1]}px`, left: `${item?.mousePosX - positionDiff[0]}px` }
+                const dragStyle = { top: `${mousePosY - positionDiff[1]}px`, left: `${mousePosX - positionDiff[0]}px` }
+                return (
+                  <div className={'circle ' + item?.color} key={"new-circle-" + index}
+                    style={(dragItem === index || (dragItem === -1 && index === newCircles.length - 1)) ? dragStyle : defaultStyle}
+                    onMouseDown={(e) => {
+                      if (e.button === 2) return
+                      circlePicked(false, index, "")
+                    }}
+                    onContextMenu={(e) => {
+                      e.preventDefault()
+                      setDropMenuItem(index)
+                    }}
+                    onMouseLeave={(e) => {
+                      setDropMenuItem(-1)
+                    }}>
+                    {item?.number}
+                    <div className={(dropMenuItem === index) ? "drop-menu" : "hidden"}>
+                      <p>Number <input min={1} type="number" value={item?.number} onChange={(e) => {
+                        const nextNewCircles = newCircles.map((itemM, indexX) => {
+                          if (indexX === index) {
+                            return {
+                              ...itemM,
+                              number: e.target.value,
+                            };
+                          }
+                          else return itemM
+                        })
+                        setNewCircles(nextNewCircles)
+                      }} /></p>
+                      <p>Name   <input value={item?.name} onChange={(e) => {
+                        const nextNewCircles = newCircles.map((itemM, indexX) => {
+                          if (indexX === index) {
+                            return {
+                              ...itemM,
+                              name: e.target.value,
+                            };
+                          }
+                          else return itemM
+                        })
+                        setNewCircles(nextNewCircles)
+                      }} /></p>
+                    </div>
+                    <div className="name">{item?.name}</div>
+                  </div>
+                )
+              })
+            }
+          </div>
           <div className="button-line">
             <div className="button-group">
               <div className="button">
@@ -125,9 +223,6 @@ function MainPage({
               <div className="button" onClick={() => navigate("/animation")}>
                 <VideoIcon style={{ color: "red", stroke: "red" }} />
               </div>
-              {/* <div className="button">
-              <UsersIcon />
-            </div> */}
             </div>
             <div className="button-group">
               <div className="button">
@@ -149,14 +244,14 @@ function MainPage({
           </div>
           <div className="button-line">
             <div className="circles">
-              <div className="circle red">1</div>
-              <div className="circle blue">1</div>
-              <div className="circle brown">1</div>
-              <div className="circle yellow">1</div>
-              <div className="circle green">1</div>
-              <div className="circle white">1</div>
-              <div className="circle grey">1</div>
-              <div className="circle black">1</div>
+              <div className="circle red" onMouseDown={() => circlePicked(true, -1, "red")}>1</div>
+              <div className="circle blue" onMouseDown={() => circlePicked(true, -1, "blue")}>1</div>
+              <div className="circle brown" onMouseDown={() => circlePicked(true, -1, "brown")}>1</div>
+              <div className="circle yellow" onMouseDown={() => circlePicked(true, -1, "yellow")}>1</div>
+              <div className="circle green" onMouseDown={() => circlePicked(true, -1, "green")}>1</div>
+              <div className="circle white" onMouseDown={() => circlePicked(true, -1, "white")}>1</div>
+              <div className="circle grey" onMouseDown={() => circlePicked(true, -1, "grey")}>1</div>
+              <div className="circle black" onMouseDown={() => circlePicked(true, -1, "black")}>1</div>
 
               <div className="point purple" />
               <div className="point orange" />
@@ -170,7 +265,7 @@ function MainPage({
               <div className="button">
                 <RotateIcon />
               </div>
-              <div className="button">
+              <div className="button" onClick={() => setNewCircles([])}>
                 <TrashIcon />
               </div>
             </div>
