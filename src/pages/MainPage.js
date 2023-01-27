@@ -66,6 +66,7 @@ function MainPage({
     else setPositionDiff([24, 75])
 
     // setPositionDiff([31, 80])
+    window.scrollTo(0, 1);
   }, []);
   const exportAsImage = async (element, imageFileName, downloadFlag) => {
     const canvas = await html2canvas(element);
