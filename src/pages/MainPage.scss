@@ -103,6 +103,7 @@
                         padding: 10px 20px 10px 20px;
                         width: max-content;
                         z-index: 5;
+                        color: white;
                         p{
                             margin: 0px;
                             justify-content: space-between;
@@ -121,12 +122,25 @@
                             }
                             padding: 2px 0px 2px 0px;
                         }
+                        .delete-button{
+                            background-color: #ffffff28;
+                            margin-top: 2px;
+                            padding: 2px;
+                            text-align: center;
+                            width: 100%;
+                            box-sizing: border-box;
+                            border-radius: 0px 0px 7px 7px;
+                            &:hover{
+                                background-color: #ffffff5b;
+                            }
+                        }
                     }
                     .name{
                         position: absolute;
                         bottom: -23px;
                         color: rgb(0, 0, 0);
                         font-weight: 800;
+                        // font-size: large;
                         width: max-content;
                     }
                 }

@@ -64,10 +64,8 @@ function MainPage({
     else if(imageWidth > 872) setPositionDiff([31, 110-(0.2*(imageWidth-872))])
     else if(imageWidth > 480) setPositionDiff([29, 80])
     else setPositionDiff([24, 75])
-
-    // setPositionDiff([31, 80])
-    window.scrollTo(0, 1);
   }, []);
+  window.scrollTo(0, 1);
   const exportAsImage = async (element, imageFileName, downloadFlag) => {
     const canvas = await html2canvas(element);
     const image = canvas.toDataURL("image/png", 1.0);
@@ -103,8 +101,8 @@ function MainPage({
   }
   const circleReleased = () => {
     if (dragItem === -2) return
-    const releasingId = dragItem > -1 ? dragItem : newCircles.length - 1
-    const nextNewCircles = newCircles.map((item, index) => {
+    const releasingId = dragItem > -1 ? dragItem : newCircles?.length - 1
+    const nextNewCircles = newCircles?.map((item, index) => {
       if (index === releasingId) {
         return {
           ...item,
@@ -146,16 +144,13 @@ function MainPage({
           }}>
           <div id="new-circles">
             {
-              newCircles.map((item, index) => {
+              newCircles?.map((item, index) => {
                 const defaultStyle = { top: `${item?.mousePosY - positionDiff[1]}px`, left: `${item?.mousePosX - positionDiff[0]}px` }
                 const dragStyle = { top: `${mousePosY - positionDiff[1]}px`, left: `${mousePosX - positionDiff[0]}px` }
                 var contextFlag = false
-                // console.log("dragItem", dragItem)
-                // console.log("index", index)
-                // console.log("newCircles.length", newCircles.length)
                 return (
                   <div className={'circle ' + item?.color} key={"new-circle-" + index}
-                    style={(dragItem === index || (dragItem === -1 && index === newCircles.length - 1)) ? dragStyle : defaultStyle}
+                    style={(dragItem === index || (dragItem === -1 && index === newCircles?.length - 1)) ? dragStyle : defaultStyle}
                     // style={defaultStyle}
                     onMouseDown={(e) => {
                       if (e.button === 2) return
@@ -180,7 +175,7 @@ function MainPage({
                     {item?.number}
                     <div className={(dropMenuItem === index) ? "drop-menu" : "hidden"}>
                       <p>Number <input min={1} type="number" value={item?.number} onChange={(e) => {
-                        const nextNewCircles = newCircles.map((itemM, indexX) => {
+                        const nextNewCircles = newCircles?.map((itemM, indexX) => {
                           if (indexX === index) {
                             return {
                               ...itemM,
@@ -192,7 +187,7 @@ function MainPage({
                         setNewCircles(nextNewCircles)
                       }} /></p>
                       <p>Name   <input value={item?.name} onChange={(e) => {
-                        const nextNewCircles = newCircles.map((itemM, indexX) => {
+                        const nextNewCircles = newCircles?.map((itemM, indexX) => {
                           if (indexX === index) {
                             return {
                               ...itemM,
@@ -203,6 +198,14 @@ function MainPage({
                         })
                         setNewCircles(nextNewCircles)
                       }} /></p>
+                      <div className="delete-button" onClick={()=>{
+                        setDropMenuItem(-1)
+                        setNewCircles([...newCircles?.slice(0, index), ...newCircles?.slice(index + 1)])}
+                      }
+                      onTouchStart={()=>{
+                        setDropMenuItem(-1)
+                        setNewCircles([...newCircles?.slice(0, index), ...newCircles?.slice(index + 1)])
+                      }}>Delete</div>
                     </div>
                     <div className="name">{item?.name}</div>
                   </div>
@@ -274,14 +277,14 @@ function MainPage({
           </div>
           <div className="button-line">
             <div className="circles">
-              <div className="circle red" onMouseDown={() => circlePicked(true, -1, "red")} onTouchStart={() => circlePicked(true, -1, "red")}>1</div>
-              <div className="circle blue" onMouseDown={() => circlePicked(true, -1, "blue")} onTouchStart={() => circlePicked(true, -1, "blue")}>1</div>
-              <div className="circle brown" onMouseDown={() => circlePicked(true, -1, "brown")} onTouchStart={() => circlePicked(true, -1, "brown")}>1</div>
-              <div className="circle yellow" onMouseDown={() => circlePicked(true, -1, "yellow")} onTouchStart={() => circlePicked(true, -1, "yellow")}>1</div>
-              <div className="circle green" onMouseDown={() => circlePicked(true, -1, "green")} onTouchStart={() => circlePicked(true, -1, "green")}>1</div>
-              <div className="circle white" onMouseDown={() => circlePicked(true, -1, "white")} onTouchStart={() => circlePicked(true, -1, "white")}>1</div>
-              <div className="circle grey" onMouseDown={() => circlePicked(true, -1, "grey")} onTouchStart={() => circlePicked(true, -1, "grey")}>1</div>
-              <div className="circle black" onMouseDown={() => circlePicked(true, -1, "black")} onTouchStart={() => circlePicked(true, -1, "black")}>1</div>
+              <div className="circle red" onMouseDown={() => circlePicked(true, -1, "red")} onTouchStart={() => circlePicked(true, -1, "red")}></div>
+              <div className="circle blue" onMouseDown={() => circlePicked(true, -1, "blue")} onTouchStart={() => circlePicked(true, -1, "blue")}></div>
+              <div className="circle brown" onMouseDown={() => circlePicked(true, -1, "brown")} onTouchStart={() => circlePicked(true, -1, "brown")}></div>
+              <div className="circle yellow" onMouseDown={() => circlePicked(true, -1, "yellow")} onTouchStart={() => circlePicked(true, -1, "yellow")}></div>
+              <div className="circle green" onMouseDown={() => circlePicked(true, -1, "green")} onTouchStart={() => circlePicked(true, -1, "green")}></div>
+              <div className="circle white" onMouseDown={() => circlePicked(true, -1, "white")} onTouchStart={() => circlePicked(true, -1, "white")}></div>
+              <div className="circle grey" onMouseDown={() => circlePicked(true, -1, "grey")} onTouchStart={() => circlePicked(true, -1, "grey")}></div>
+              <div className="circle black" onMouseDown={() => circlePicked(true, -1, "black")} onTouchStart={() => circlePicked(true, -1, "black")}></div>
 
               <div className="point purple" />
               <div className="point orange" />
