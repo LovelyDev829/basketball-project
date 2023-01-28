@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./MainPage.scss";
 import { useNavigate } from "react-router-dom";
 import fieldLine from "../assets/field-line-with-logo.png";
@@ -64,40 +64,32 @@ function MainPage({
       setFullScreenFlag(false);
     else setFullScreenFlag(true);
   });
-  // imgWidth =  document?.getElementById("image-to-download")?.getBoundingClientRect()?.width
-  useLayoutEffect(() => {
+  useEffect(() => {
     if(!onceFlag) return
     onceFlag = false
     const interval = setInterval(() => {
+      console.log("interval")
       const tempInnerWidth = window.innerWidth
-      // console.log(tempInnerWidth, windowsWidth, Math.abs(tempInnerWidth - windowsWidth))
-      if(Math.abs(tempInnerWidth - windowsWidth)<2) return
-      // console.log("inside-1")
       setWindowsWidth(tempInnerWidth)
-      // console.log("inside-2")
       setImgWidth(document?.getElementById("image-to-download")?.getBoundingClientRect()?.width)
       if (tempInnerWidth > 1170) {
         setPositionCircleDiff(18)
         setPositionPointDiff(10)
         setPositionBallDiff(15)
-        // console.log("case1")
       }
       else if (tempInnerWidth > 480) {
         setPositionCircleDiff(13)
         setPositionPointDiff(7)
         setPositionBallDiff(10)
-        // console.log("case2")
       }
       else {
         setPositionCircleDiff(9)
         setPositionPointDiff(6)
         setPositionBallDiff(8)
-        // console.log("case3")
       }
-      // console.log(positionCircleDiff, positionPointDiff, positionBallDiff)
       return () => clearInterval(interval);
     }, 100);
-  },[windowsWidth]);
+  },[windowsWidth, imgWidth]);
   const exportAsImage = async (element, imageFileName, downloadFlag) => {
     const canvas = await html2canvas(element);
     const image = canvas.toDataURL("image/png", 1.0);
@@ -229,7 +221,6 @@ function MainPage({
         <div className="user-avatar">
           <UserIcon />
           Williams
-          {/* {imgWidth} */}
         </div>
       </div>
       <div className="main">
