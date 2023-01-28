@@ -40,8 +40,11 @@
             padding: 0px 10px 0px 0px;
             box-sizing: border-box;
             .image-to-download{
+                position: relative;
                 padding: 10px;
                 box-sizing: border-box;
+                width: fit-content;
+                margin: auto;
                 img{
                     width: 100%;
                     max-height: calc(100vh - 220px);
@@ -59,7 +62,6 @@
                         height: 30px;
                         width: 30px;
                         border-radius: 40px;
-                        margin: 0px 5px 0px 5px;
                         display: flex;
                         justify-content: center;
                         align-items: center;
@@ -158,7 +160,6 @@
                         height: 20px;
                         border-radius: 20px;
                         background-color: #90775c;
-                        margin: 0px 5px 0px 5px;
                         cursor: pointer;
                         &.purple{
                             background-color: purple;
@@ -470,7 +471,6 @@
                             height: 20px;
                             width: 20px;
                             border-radius: 40px;
-                            margin: 0px 3px 0px 3px;
                             .drop-menu{
                                 top: 20px;
                                 padding: 7px 15px 7px 15px;
@@ -483,12 +483,10 @@
                             width: 15px;
                             height: 15px;
                             border-radius: 20px;
-                            margin: 0px 3px 0px 3px;
                         }
                         .ball{
                             width: 20px;
                             height: 20px;
-                            border-radius: 30px;
                         }
                     }
                 }
@@ -710,7 +708,6 @@
                         .circle{
                             height: 16px;
                             width: 16px;
-                            margin: 0px 2px 0px 2px;
                             border-width: 1.8px !important;
                             .drop-menu{
                                 top: 15px;
@@ -724,7 +721,6 @@
                         .point{
                             width: 12px;
                             height: 12px;
-                            margin: 0px 2px 0px 2px;
                         }
                         .ball{
                             width: 16px;

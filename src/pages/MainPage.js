@@ -13,7 +13,7 @@ import { ReactComponent as FieldIcon } from "../assets/svg/field.svg";
 import { ReactComponent as MinimizeIcon } from "../assets/svg/minimize.svg";
 import { ReactComponent as MaximizeIcon } from "../assets/svg/maximize.svg";
 import { ReactComponent as VideoIcon } from "../assets/svg/video.svg";
-// import { ReactComponent as UsersIcon } from "../assets/svg/users.svg";
+// import { ReactComponent as UsersIcon } from "../assets/svg/users.svg"; 
 
 import { ReactComponent as GlobeIcon } from "../assets/svg/globe.svg";
 import { ReactComponent as HelpCircleIcon } from "../assets/svg/help-circle.svg";
@@ -40,6 +40,7 @@ function MainPage({
   fullScreenHandle
 }) {
   const navigate = useNavigate();
+  const [imgWidth, setImgWidth] = useState();
   const [dragCircleItem, setDragCircleItem] = useState(-2)
   const [dragPointItem, setDragPointItem] = useState(-2)
   const [dragBallItem, setDragBallItem] = useState(-2)
@@ -52,24 +53,34 @@ function MainPage({
   const [newPoints, setNewPoints] = useState([])
   const [newBalls, setNewBalls] = useState([])
 
-  const [positionCircleDiff, setPositionCircleDiff] = useState([25, 75])
-  const [positionPointDiff, setPositionPointDiff] = useState([25, 75])
+  const [positionCircleDiff, setPositionCircleDiff] = useState(18)
+  const [positionPointDiff, setPositionPointDiff] = useState(10)
+  const [positionBallDiff, setPositionBallDiff] = useState(15)
 
   useEffect(() => {
     if (!document.mozFullScreen && !document.webkitIsFullScreen)
       setFullScreenFlag(false);
     else setFullScreenFlag(true);
   });
+  const imageWidthNow = window.innerWidth
   useLayoutEffect(() => {
-    const imageWidth = window.innerWidth
-    if (imageWidth > 1266) { setPositionCircleDiff([31, 105]); setPositionPointDiff([24, 95]) }
-    else if (imageWidth > 1170) { setPositionCircleDiff([31, 120 - ((3 / 19) * (imageWidth - 1170))]); setPositionPointDiff([24, 110 - ((3 / 19) * (imageWidth - 1170))]) }
-    else if (imageWidth > 1040) { setPositionCircleDiff([31, 80]); setPositionPointDiff([25, 72]) }
-    else if (imageWidth > 872) { setPositionCircleDiff([31, 110 - ((31 / 167) * (imageWidth - 873))]); setPositionPointDiff([25, 103 - ((31 / 167) * (imageWidth - 873))]) }
-    else if (imageWidth > 480) { setPositionCircleDiff([29, 80]); setPositionPointDiff([23, 73]) }
-    else { setPositionCircleDiff([24, 75]); setPositionPointDiff([20, 71]) }
-  }, []);
-  window.scrollTo(0, 1);
+    setImgWidth(document.getElementById("image-to-download").getBoundingClientRect().width)
+    if (imageWidthNow > 1170) {
+      setPositionCircleDiff(18)
+      setPositionPointDiff(10)
+      setPositionBallDiff(15)
+    }
+    else if (imageWidthNow > 480) {
+      setPositionCircleDiff(13)
+      setPositionPointDiff(7)
+      setPositionBallDiff(10)
+    }
+    else {
+      setPositionCircleDiff(9)
+      setPositionPointDiff(6)
+      setPositionBallDiff(8)
+    }
+  }, [imageWidthNow]);
   const exportAsImage = async (element, imageFileName, downloadFlag) => {
     const canvas = await html2canvas(element);
     const image = canvas.toDataURL("image/png", 1.0);
@@ -88,6 +99,21 @@ function MainPage({
 
     fakeLink.remove();
   };
+  const setPositionByMouse = (e) => {
+    var bounds = document.getElementById("image-to-download").getBoundingClientRect();
+    var x = e.clientX - bounds.left;
+    var y = e.clientY - bounds.top;
+    setMousePosX(x);
+    setMousePosY(y);
+  }
+  const setPositionByTouch = (e) => {
+    var bounds = document.getElementById("image-to-download").getBoundingClientRect();
+    var x = e.changedTouches[0].clientX - bounds.left;
+    var y = e.changedTouches[0].clientY - bounds.top;
+    setMousePosX(x + 1);
+    setMousePosY(y + 1);
+  }
+/////////////////////////////////////////////////////////////////////////////////
   const circlePicked = (creatingFlag, index, color) => {
     if (dropMenuItem > -1) return
     setDragCircleItem(index)
@@ -98,7 +124,8 @@ function MainPage({
         number: 1,
         name: "",
         mousePosX: mousePosX,
-        mousePosY: mousePosY
+        mousePosY: mousePosY,
+        imgWidth: imgWidth
       }
       newCircles.push(newObject)
     }
@@ -111,7 +138,8 @@ function MainPage({
         return {
           ...item,
           mousePosX: mousePosX,
-          mousePosY: mousePosY
+          mousePosY: mousePosY,
+          imgWidth: imgWidth
         };
       }
       else return item
@@ -125,7 +153,8 @@ function MainPage({
       const newObject = {
         color: color,
         mousePosX: mousePosX,
-        mousePosY: mousePosY
+        mousePosY: mousePosY,
+        imgWidth: imgWidth
       }
       newPoints.push(newObject)
     }
@@ -138,7 +167,8 @@ function MainPage({
         return {
           ...item,
           mousePosX: mousePosX,
-          mousePosY: mousePosY
+          mousePosY: mousePosY,
+          imgWidth: imgWidth
         };
       }
       else return item
@@ -151,7 +181,8 @@ function MainPage({
     if (creatingFlag) {
       const newObject = {
         mousePosX: mousePosX,
-        mousePosY: mousePosY
+        mousePosY: mousePosY,
+        imgWidth: imgWidth
       }
       newBalls.push(newObject)
     }
@@ -164,7 +195,8 @@ function MainPage({
         return {
           ...item,
           mousePosX: mousePosX,
-          mousePosY: mousePosY
+          mousePosY: mousePosY,
+          imgWidth: imgWidth
         };
       }
       else return item
@@ -172,6 +204,7 @@ function MainPage({
     setNewBalls(nextNewBalls)
     setDragBallItem(-2)
   }
+  
   return (
     <div className="MainPage">
       <div className="top-user-info">
@@ -186,18 +219,9 @@ function MainPage({
           onMouseUp={() => { circleReleased(); pointReleased(); ballReleased() }}
           onTouchEnd={() => { circleReleased(); pointReleased(); ballReleased() }}
           onMouseLeave={() => { circleReleased(); pointReleased(); ballReleased() }}
-          onMouseMove={(e) => {
-            setMousePosX(e.clientX);
-            setMousePosY(e.clientY);
-          }}
-          onTouchMove={(e) => {
-            setMousePosX(e.changedTouches[0].clientX)
-            setMousePosY(e.changedTouches[0].clientY)
-          }}
-          onTouchStart={(e) => {
-            setMousePosX(e.changedTouches[0].clientX)
-            setMousePosY(e.changedTouches[0].clientY)
-          }}>
+          onMouseMove={(e) => setPositionByMouse(e)}
+          onTouchMove={(e) => setPositionByTouch(e)}
+          onTouchStart={(e) => setPositionByTouch(e)}>
           <div className="button-line">
             <div className="button-group">
               <div className="button">
@@ -259,8 +283,8 @@ function MainPage({
             <div id="new-circles">
               {
                 newCircles?.map((item, index) => {
-                  const defaultStyle = { top: `${item?.mousePosY - positionCircleDiff[1]}px`, left: `${item?.mousePosX - positionCircleDiff[0]}px` }
-                  const dragStyle = { top: `${mousePosY - positionCircleDiff[1]}px`, left: `${mousePosX - positionCircleDiff[0]}px` }
+                  const defaultStyle = { top: `${item?.mousePosY*(imgWidth/item?.imgWidth) - positionCircleDiff}px`, left: `${item?.mousePosX*(imgWidth/item?.imgWidth) - positionCircleDiff}px` }
+                  const dragStyle = { top: `${mousePosY - positionCircleDiff}px`, left: `${mousePosX - positionCircleDiff}px` }
                   var contextFlag = false
                   return (
                     <div className={'circle ' + item?.color} key={"new-circle-" + index}
@@ -328,8 +352,8 @@ function MainPage({
               }
               {
                 newPoints?.map((item, index) => {
-                  const defaultStyle = { top: `${item?.mousePosY - positionPointDiff[1]}px`, left: `${item?.mousePosX - positionPointDiff[0]}px` }
-                  const dragStyle = { top: `${mousePosY - positionPointDiff[1]}px`, left: `${mousePosX - positionPointDiff[0]}px` }
+                  const defaultStyle = { top: `${item?.mousePosY*(imgWidth/item?.imgWidth) - positionPointDiff}px`, left: `${item?.mousePosX*(imgWidth/item?.imgWidth) - positionPointDiff}px` }
+                  const dragStyle = { top: `${mousePosY - positionPointDiff}px`, left: `${mousePosX - positionPointDiff}px` }
                   var contextFlag = false
                   return (
                     <div className={'point ' + item?.color} key={"new-point-" + index}
@@ -358,8 +382,8 @@ function MainPage({
               }
               {
                 newBalls?.map((item, index) => {
-                  const defaultStyle = { top: `${item?.mousePosY - positionPointDiff[1]}px`, left: `${item?.mousePosX - positionPointDiff[0]}px` }
-                  const dragStyle = { top: `${mousePosY - positionPointDiff[1]}px`, left: `${mousePosX - positionPointDiff[0]}px` }
+                  const defaultStyle = { top: `${item?.mousePosY*(imgWidth/item?.imgWidth) - positionBallDiff}px`, left: `${item?.mousePosX*(imgWidth/item?.imgWidth) - positionBallDiff}px` }
+                  const dragStyle = { top: `${mousePosY - positionBallDiff}px`, left: `${mousePosX - positionBallDiff}px` }
                   var contextFlag = false
                   return (
                     <div className='ball' key={"new-ball-" + index}
