@@ -33,31 +33,27 @@ import { ReactComponent as UserIcon } from "../assets/svg/user.svg";
 import mainLogo from "../assets/logo.png";
 import html2canvas from "html2canvas";
 var onceFlag = true
+
 function MainPage({
-  fieldLineFlag,
-  setFieldLineFlag,
-  fullScreenFlag,
-  setFullScreenFlag,
-  fullScreenHandle
+  fieldLineFlag, setFieldLineFlag,
+  fullScreenFlag, setFullScreenFlag,
+  fullScreenHandle,
+  imgWidth, setImgWidth,
+  windowsWidth, setWindowsWidth,
+  mousePosX, setMousePosX,
+  mousePosY, setMousePosY,
+  newCircles, setNewCircles,
+  newPoints, setNewPoints,
+  newBalls, setNewBalls,
+  positionCircleDiff, setPositionCircleDiff,
+  positionPointDiff, setPositionPointDiff,
+  positionBallDiff, setPositionBallDiff
 }) {
   const navigate = useNavigate();
-  const [imgWidth, setImgWidth] = useState();
-  const [windowsWidth, setWindowsWidth] = useState(window.innerWidth);
   const [dragCircleItem, setDragCircleItem] = useState(-2)
   const [dragPointItem, setDragPointItem] = useState(-2)
   const [dragBallItem, setDragBallItem] = useState(-2)
-
   const [dropMenuItem, setDropMenuItem] = useState(-1)
-  const [mousePosX, setMousePosX] = useState(0)
-  const [mousePosY, setMousePosY] = useState(0)
-
-  const [newCircles, setNewCircles] = useState([])
-  const [newPoints, setNewPoints] = useState([])
-  const [newBalls, setNewBalls] = useState([])
-
-  const [positionCircleDiff, setPositionCircleDiff] = useState(18)
-  const [positionPointDiff, setPositionPointDiff] = useState(10)
-  const [positionBallDiff, setPositionBallDiff] = useState(15)
 
   useEffect(() => {
     if (!document.mozFullScreen && !document.webkitIsFullScreen)
@@ -68,7 +64,6 @@ function MainPage({
     if(!onceFlag) return
     onceFlag = false
     const interval = setInterval(() => {
-      console.log("interval")
       const tempInnerWidth = window.innerWidth
       setWindowsWidth(tempInnerWidth)
       setImgWidth(document?.getElementById("image-to-download")?.getBoundingClientRect()?.width)
@@ -88,8 +83,8 @@ function MainPage({
         setPositionBallDiff(8)
       }
       return () => clearInterval(interval);
-    }, 100);
-  },[windowsWidth, imgWidth]);
+    }, 50);
+  },[windowsWidth, setWindowsWidth, imgWidth, setImgWidth, setPositionCircleDiff, setPositionPointDiff, setPositionBallDiff]);
   const exportAsImage = async (element, imageFileName, downloadFlag) => {
     const canvas = await html2canvas(element);
     const image = canvas.toDataURL("image/png", 1.0);

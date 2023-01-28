@@ -8,6 +8,19 @@ function Routing({fullScreenHandle}) {
   const loginFlag = true;
   const [fieldLineFlag, setFieldLineFlag] = useState(true);
   const [fullScreenFlag, setFullScreenFlag] = useState(false);
+
+  const [imgWidth, setImgWidth] = useState();
+  const [windowsWidth, setWindowsWidth] = useState(window.innerWidth);
+
+  const [mousePosX, setMousePosX] = useState(0)
+  const [mousePosY, setMousePosY] = useState(0)
+  const [newCircles, setNewCircles] = useState([])
+  const [newPoints, setNewPoints] = useState([])
+  const [newBalls, setNewBalls] = useState([])
+  const [positionCircleDiff, setPositionCircleDiff] = useState(18)
+  const [positionPointDiff, setPositionPointDiff] = useState(10)
+  const [positionBallDiff, setPositionBallDiff] = useState(15)
+
   return (
     <Router basename={process.env.PUBLIC_URL}>
       <Routes>
@@ -16,11 +29,20 @@ function Routing({fullScreenHandle}) {
           path="/"
           element={
             <MainPage
-              fieldLineFlag={fieldLineFlag}
-              setFieldLineFlag={setFieldLineFlag}
-              fullScreenFlag={fullScreenFlag}
-              setFullScreenFlag={setFullScreenFlag}
+              fieldLineFlag={fieldLineFlag}  setFieldLineFlag={setFieldLineFlag}
+              fullScreenFlag={fullScreenFlag} setFullScreenFlag={setFullScreenFlag}
               fullScreenHandle={fullScreenHandle}
+
+              imgWidth={imgWidth} setImgWidth={setImgWidth}
+              windowsWidth={windowsWidth} setWindowsWidth={setWindowsWidth}
+              mousePosX={mousePosX} setMousePosX={setMousePosX}
+              mousePosY={mousePosY} setMousePosY={setMousePosY}
+              newCircles={newCircles} setNewCircles={setNewCircles}
+              newPoints={newPoints} setNewPoints={setNewPoints}
+              newBalls={newBalls} setNewBalls={setNewBalls}
+              positionCircleDiff={positionCircleDiff} setPositionCircleDiff={setPositionCircleDiff}
+              positionPointDiff={positionPointDiff} setPositionPointDiff={setPositionPointDiff}
+              positionBallDiff={positionBallDiff} setPositionBallDiff={setPositionBallDiff}
             />
           }
         />
@@ -31,11 +53,20 @@ function Routing({fullScreenHandle}) {
             path="/main"
             element={
               <MainPage
-                fieldLineFlag={fieldLineFlag}
-                setFieldLineFlag={setFieldLineFlag}
-                fullScreenFlag={fullScreenFlag}
-                setFullScreenFlag={setFullScreenFlag}
+                fieldLineFlag={fieldLineFlag}  setFieldLineFlag={setFieldLineFlag}
+                fullScreenFlag={fullScreenFlag} setFullScreenFlag={setFullScreenFlag}
                 fullScreenHandle={fullScreenHandle}
+
+                imgWidth={imgWidth} setImgWidth={setImgWidth}
+                windowsWidth={windowsWidth} setWindowsWidth={setWindowsWidth}
+                mousePosX={mousePosX} setMousePosX={setMousePosX}
+                mousePosY={mousePosY} setMousePosY={setMousePosY}
+                newCircles={newCircles} setNewCircles={setNewCircles}
+                newPoints={newPoints} setNewPoints={setNewPoints}
+                newBalls={newBalls} setNewBalls={setNewBalls}
+                positionCircleDiff={positionCircleDiff} setPositionCircleDiff={setPositionCircleDiff}
+                positionPointDiff={positionPointDiff} setPositionPointDiff={setPositionPointDiff}
+                positionBallDiff={positionBallDiff} setPositionBallDiff={setPositionBallDiff}
               />
             }
           />}
@@ -45,11 +76,20 @@ function Routing({fullScreenHandle}) {
             path="/animation"
             element={
               <AnimationPage
-                fieldLineFlag={fieldLineFlag}
-                setFieldLineFlag={setFieldLineFlag}
-                fullScreenFlag={fullScreenFlag}
-                setFullScreenFlag={setFullScreenFlag}
+                fieldLineFlag={fieldLineFlag}  setFieldLineFlag={setFieldLineFlag}
+                fullScreenFlag={fullScreenFlag} setFullScreenFlag={setFullScreenFlag}
                 fullScreenHandle={fullScreenHandle}
+
+                imgWidth={imgWidth} setImgWidth={setImgWidth}
+                windowsWidth={windowsWidth} setWindowsWidth={setWindowsWidth}
+                mousePosX={mousePosX} setMousePosX={setMousePosX}
+                mousePosY={mousePosY} setMousePosY={setMousePosY}
+                newCircles={newCircles} setNewCircles={setNewCircles}
+                newPoints={newPoints} setNewPoints={setNewPoints}
+                newBalls={newBalls} setNewBalls={setNewBalls}
+                positionCircleDiff={positionCircleDiff} setPositionCircleDiff={setPositionCircleDiff}
+                positionPointDiff={positionPointDiff} setPositionPointDiff={setPositionPointDiff}
+                positionBallDiff={positionBallDiff} setPositionBallDiff={setPositionBallDiff}
               />
             }
           />}
