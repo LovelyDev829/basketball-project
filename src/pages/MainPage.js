@@ -32,6 +32,7 @@ import { ReactComponent as UserIcon } from "../assets/svg/user.svg";
 
 import mainLogo from "../assets/logo.png";
 import html2canvas from "html2canvas";
+
 function MainPage({
   fieldLineFlag,
   setFieldLineFlag,
@@ -41,6 +42,7 @@ function MainPage({
 }) {
   const navigate = useNavigate();
   const [imgWidth, setImgWidth] = useState();
+  const [windowsWidth, setWindowsWidth] = useState(window.innerWidth);
   const [dragCircleItem, setDragCircleItem] = useState(-2)
   const [dragPointItem, setDragPointItem] = useState(-2)
   const [dragBallItem, setDragBallItem] = useState(-2)
@@ -62,25 +64,30 @@ function MainPage({
       setFullScreenFlag(false);
     else setFullScreenFlag(true);
   });
-  const imageWidthNow = window.innerWidth
+  // imgWidth =  document?.getElementById("image-to-download")?.getBoundingClientRect()?.width
   useLayoutEffect(() => {
-    setImgWidth(document.getElementById("image-to-download").getBoundingClientRect().width)
-    if (imageWidthNow > 1170) {
-      setPositionCircleDiff(18)
-      setPositionPointDiff(10)
-      setPositionBallDiff(15)
-    }
-    else if (imageWidthNow > 480) {
-      setPositionCircleDiff(13)
-      setPositionPointDiff(7)
-      setPositionBallDiff(10)
-    }
-    else {
-      setPositionCircleDiff(9)
-      setPositionPointDiff(6)
-      setPositionBallDiff(8)
-    }
-  }, [imageWidthNow]);
+    setInterval(() => {
+      // console.log(window.innerWidth, document?.getElementById("image-to-download")?.getBoundingClientRect()?.width)
+      if(Math.abs(window.innerWidth - windowsWidth)<10) return
+      setWindowsWidth(window.innerWidth)
+      setImgWidth(document?.getElementById("image-to-download")?.getBoundingClientRect()?.width)
+      if (windowsWidth > 1170) {
+        setPositionCircleDiff(18)
+        setPositionPointDiff(10)
+        setPositionBallDiff(15)
+      }
+      else if (windowsWidth > 480) {
+        setPositionCircleDiff(13)
+        setPositionPointDiff(7)
+        setPositionBallDiff(10)
+      }
+      else {
+        setPositionCircleDiff(9)
+        setPositionPointDiff(6)
+        setPositionBallDiff(8)
+      }
+    }, 100);
+  },[windowsWidth]);
   const exportAsImage = async (element, imageFileName, downloadFlag) => {
     const canvas = await html2canvas(element);
     const image = canvas.toDataURL("image/png", 1.0);
