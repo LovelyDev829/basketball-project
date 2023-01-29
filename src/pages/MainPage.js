@@ -54,6 +54,7 @@ function MainPage({
   const [dragPointItem, setDragPointItem] = useState(-2)
   const [dragBallItem, setDragBallItem] = useState(-2)
   const [dropMenuItem, setDropMenuItem] = useState(-1)
+  const [rosterShowFlag, setRosterShowFlag] = useState(false)
 
   useEffect(() => {
     if (!document.mozFullScreen && !document.webkitIsFullScreen)
@@ -211,15 +212,9 @@ function MainPage({
   
   return (
     <div className="MainPage">
-      <div className="top-user-info">
-        <img src={mainLogo} alt="" />
-        <div className="user-avatar">
-          <UserIcon />
-          Williams
-        </div>
-      </div>
       <div className="main">
         <div className="board"
+          onClick={()=> {if(rosterShowFlag) setRosterShowFlag(false)}}
           onMouseUp={() => { circleReleased(); pointReleased(); ballReleased() }}
           onTouchEnd={() => { circleReleased(); pointReleased(); ballReleased() }}
           onMouseLeave={() => { circleReleased(); pointReleased(); ballReleased() }}
@@ -228,7 +223,7 @@ function MainPage({
           onTouchStart={(e) => setPositionByTouch(e)}>
           <div className="button-line">
             <div className="button-group">
-              <div className="button">
+              <div className="button" onClick={()=>setRosterShowFlag(!rosterShowFlag)}>
                 <MenuIcon />
               </div>
               <div className="button">
@@ -446,8 +441,8 @@ function MainPage({
             </div>
           </div>
         </div>
-        <div className="roster">
-          <div className="hidden">
+        <div className={rosterShowFlag?"roster show": "roster"}>
+          <div className="top-user-info">
             <img src={mainLogo} alt="" />
             <div className="user-avatar">
               <UserIcon />

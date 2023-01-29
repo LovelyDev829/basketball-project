@@ -1,11 +1,6 @@
 .MainPage{
     width: 100%;
     padding-top: 20px;
-    // position: fixed;
-    // top: 50%;
-    // left: 50%;
-    // transform: translate(-50%, -50%);
-    // background-color: rgb(115, 133, 84);
     box-sizing: border-box;
     .top-user-info{
         display: flex;
@@ -34,10 +29,13 @@
         padding: 0px 10px 0px 10px;
         align-items: center;
         .board{
-            position: relative;
-            width: 60%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-right: -50%;
+            transform: translate(-50%, -50%);
+            // width: 60%;
             height: fit-content;
-            padding: 0px 10px 0px 0px;
             box-sizing: border-box;
             .image-to-download{
                 position: relative;
@@ -47,7 +45,7 @@
                 margin: auto;
                 img{
                     width: 100%;
-                    max-height: calc(100vh - 220px);
+                    max-height: calc(100vh - 150px);
                     object-fit: contain;
                 }
                 #new-circles{
@@ -312,45 +310,30 @@
             }
         }
         .roster{
-            width: 40%;
-            // height: 100%;
-            padding: 0px 20px 0px 10px;
+            display: none;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: max-content;
+            height: 100vh;
+            background-image: linear-gradient(to bottom, #0c0c18, rgba(0,0,0,1));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
             box-sizing: border-box;
-            // background-color: #614628;
-            .user-info{
-                display: flex;
-                justify-content: flex-end;
-                padding-bottom: 10px;
-                align-items: center;
-                img{
-                    width: 30%;
-                    height: fit-content;
-                }
-                .user-avatar{
-                    margin-left: 30px;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    text-align: center;
-                    color: white;
-                    svg{
-                        // height: 100%;
-                        width: auto;
-                    }
-                }
-            }
             .table{
-                // background-color: aliceblue;
-                background-image: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,1));
+                background-image: linear-gradient(to bottom, rgb(89, 4, 4), rgba(0,0,0,1));
                 width: 100%;
-                max-height: calc(100vh - 100px);
+                max-height: calc(100vh - 10px);
                 overflow-y: scroll;
+                border-top: 1px solid #2b2c4b;
                 &::-webkit-scrollbar {
-                    background-color: rgb(89,4,4);
+                    background-color: #2b2c4b;
                     width: 8px;
                 }
                 &::-webkit-scrollbar-track {
-                    // background-color: hsla(0, 0%, 100%, 0.322);
                     box-shadow: 0 0 3px hsl(235, 21%, 11%);
                     border-radius: 10px;
                 }
@@ -380,6 +363,7 @@
                             min-width: 130px;
                             width: fit-content;
                             padding: 5px 10px 5px 10px;
+                            margin: auto;
                             margin-top: 10px;
                             border-radius: 3px;
                             &:first-child{
@@ -390,6 +374,7 @@
                             min-width: 130px;
                             width: fit-content;
                             padding: 3px 8px 3px 8px;
+                            margin: auto;
                             margin-top: 10px;
                             border-radius: 3px;
                             border: 2px solid rgb(43,44,75);
@@ -432,8 +417,8 @@
                             .list{
                                 padding-top: 10px;
                                 .item{
-                                    min-width: 110px;
-                                    width: fit-content;
+                                    min-width: 100px;
+                                    width: max-content;
                                     padding: 3px 8px 3px 8px;
                                     margin-top: 10px;
                                     border-radius: 3px;
@@ -447,6 +432,11 @@
                     }
                 }
             }
+            transition-duration: 0.5s;
+            transform: translate(-100%, 0%);
+            &.show{
+                transform: translate(0%, 0%);
+            }
         }
     }
 }
@@ -459,7 +449,7 @@
                 padding: 0px 5px 0px 0px;
                 .image-to-download{
                     img{
-                        max-height: calc(100vh - 170px);
+                        max-height: calc(100vh - 120px);
                     }
                     #new-circles{
                         // background-color: aliceblue;
@@ -528,10 +518,6 @@
                 }
             }
             .roster{
-                padding: 0px 15px 0px 5px;
-                .user-info{
-                    padding-bottom: 5px;
-                }
                 .table{
                     .top{
                         padding: 5px 0px 5px 5px;
@@ -596,13 +582,10 @@
         .main{
             flex-direction: column;
             .board{
-                width: 100%;
                 padding: 0px 0px 0px 0px;
                 .image-to-download{
-                    // transform-origin: left;
-                    // transform: translate(-50vw, -25vw) rotate(0deg);
                     img{
-                        max-height: calc(60vh - 98px);
+                        max-height: calc(100vh - 100px);
                     }
                 }
                 .button-line{
@@ -622,74 +605,74 @@
                     }
                 }
             }
-            .roster{
-                width: 100%;
-                padding: 20px 10px 0px 10px;
-                font-size: small;
-                .user-info{
-                    padding-bottom: 3px;
-                }
-                .table{
-                    max-height: calc(40vh - 85px);
-                    &::-webkit-scrollbar {
-                        width: 5px;
-                    }
-                    .top{
-                        padding: 3px 0px 3px 3px;
-                        .title{
-                            border-bottom: 1.5px solid white;
-                            padding-bottom: 1px;
-                        }
-                        .list{
-                            padding: 3px 0px 0px 0px;
-                            .member{
-                                min-width: 80px;
-                                padding: 2px 5px 2px 5px;
-                                margin-top: 3px;
-                                border-radius: 3px;
-                            }
-                            .plan{
-                                min-width: 80px;
-                                padding: 1px 4px 1px 4px;
-                                margin-top: 3px;
-                                border: 1px solid rgb(43,44,75);
-                            }
-                        }
-                    }
-                    .bottom{
-                        padding: 0px 0px 3px 3px;
-                        .title{
-                            font-size: large;
-                            font-weight: 500;
-                            border-bottom: 1.5px solid white;
-                            padding-bottom: 1px;
-                        }
-                        .columns{
-                            display: flex;
-                            .column{
-                                width: 33%;
-                                &:last-child{
-                                    width: 34%;
-                                }
-                                .sub-title{
-                                    font-weight: 500;
-                                    padding: 2px 0px 1px 0px;
-                                    border-bottom: 1.5px solid white;
-                                }
-                                .list{
-                                    padding-top: 5px;
-                                    .item{
-                                        min-width: fit-content;
-                                        padding: 1px 3px 1px 3px;
-                                        margin-top: 5px;
-                                        border: 1px solid rgb(99, 15, 15);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            // .roster{
+            //     width: 100%;
+            //     padding: 20px 10px 0px 10px;
+            //     font-size: small;
+            //     .user-info{
+            //         padding-bottom: 3px;
+            //     }
+            //     .table{
+            //         max-height: calc(40vh - 85px);
+            //         &::-webkit-scrollbar {
+            //             width: 5px;
+            //         }
+            //         .top{
+            //             padding: 3px 0px 3px 3px;
+            //             .title{
+            //                 border-bottom: 1.5px solid white;
+            //                 padding-bottom: 1px;
+            //             }
+            //             .list{
+            //                 padding: 3px 0px 0px 0px;
+            //                 .member{
+            //                     min-width: 80px;
+            //                     padding: 2px 5px 2px 5px;
+            //                     margin-top: 3px;
+            //                     border-radius: 3px;
+            //                 }
+            //                 .plan{
+            //                     min-width: 80px;
+            //                     padding: 1px 4px 1px 4px;
+            //                     margin-top: 3px;
+            //                     border: 1px solid rgb(43,44,75);
+            //                 }
+            //             }
+            //         }
+            //         .bottom{
+            //             padding: 0px 0px 3px 3px;
+            //             .title{
+            //                 font-size: large;
+            //                 font-weight: 500;
+            //                 border-bottom: 1.5px solid white;
+            //                 padding-bottom: 1px;
+            //             }
+            //             .columns{
+            //                 display: flex;
+            //                 .column{
+            //                     width: 33%;
+            //                     &:last-child{
+            //                         width: 34%;
+            //                     }
+            //                     .sub-title{
+            //                         font-weight: 500;
+            //                         padding: 2px 0px 1px 0px;
+            //                         border-bottom: 1.5px solid white;
+            //                     }
+            //                     .list{
+            //                         padding-top: 5px;
+            //                         .item{
+            //                             min-width: fit-content;
+            //                             padding: 1px 3px 1px 3px;
+            //                             margin-top: 5px;
+            //                             border: 1px solid rgb(99, 15, 15);
+            //                         }
+            //                     }
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
         }
     }
 }
@@ -699,6 +682,9 @@
         .main{
             .board{
                 .image-to-download{
+                    img{
+                        max-height: calc(100vh - 90px);
+                    }
                     #new-circles{
                         // background-color: aliceblue;
                         // height: 40px;
