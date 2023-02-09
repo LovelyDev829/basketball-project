@@ -10,6 +10,7 @@ function Routing({fullScreenHandle}) {
   const [fullScreenFlag, setFullScreenFlag] = useState(false);
 
   const [imgWidth, setImgWidth] = useState();
+  const [imgHeight, setImgHeight] = useState();
   const [windowsWidth, setWindowsWidth] = useState(window.innerWidth);
 
   const [mousePosX, setMousePosX] = useState(0)
@@ -34,6 +35,7 @@ function Routing({fullScreenHandle}) {
               fullScreenHandle={fullScreenHandle}
 
               imgWidth={imgWidth} setImgWidth={setImgWidth}
+              imgHeight={imgHeight} setImgHeight={setImgHeight}
               windowsWidth={windowsWidth} setWindowsWidth={setWindowsWidth}
               mousePosX={mousePosX} setMousePosX={setMousePosX}
               mousePosY={mousePosY} setMousePosY={setMousePosY}

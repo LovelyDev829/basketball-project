@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./MainPage.scss";
 import { useNavigate } from "react-router-dom";
 import fieldLine from "../assets/field-line-with-logo.png";
@@ -30,6 +30,12 @@ import { ReactComponent as TrashIcon } from "../assets/svg/trash.svg";
 import { ReactComponent as RotateIcon } from "../assets/svg/rotate-ccw.svg";
 import { ReactComponent as UserIcon } from "../assets/svg/user.svg";
 
+import { ReactComponent as PencilIcon } from "../assets/svg/pencil.svg";
+import { ReactComponent as PointerIcon } from "../assets/svg/mouse-pointer.svg";
+import { ReactComponent as CircleIcon } from "../assets/svg/circle.svg";
+import { ReactComponent as SquareIcon } from "../assets/svg/square.svg";
+import { ReactComponent as TypeIcon } from "../assets/svg/type.svg";
+
 import mainLogo from "../assets/logo.png";
 import html2canvas from "html2canvas";
 var onceFlag = true
@@ -39,6 +45,7 @@ function MainPage({
   fullScreenFlag, setFullScreenFlag,
   fullScreenHandle,
   imgWidth, setImgWidth,
+  imgHeight, setImgHeight,
   windowsWidth, setWindowsWidth,
   mousePosX, setMousePosX,
   mousePosY, setMousePosY,
@@ -57,6 +64,8 @@ function MainPage({
   const [rosterShowFlag, setRosterShowFlag] = useState(false)
   const [currentNumbers, setCurrentNumbers] = useState([1, 1, 1, 1, 1, 1, 1, 1])
   const colorArray = ['red', 'blue', 'brown', 'yellow', 'green', 'white', 'grey', 'black']
+  const [drawPencilToolMenuFlag, setdrawPencilToolMenuFlag] = useState(false)
+  const [drawPencilTool, setdrawPencilTool] = useState(0)
 
   useEffect(() => {
     if (!document.mozFullScreen && !document.webkitIsFullScreen)
@@ -70,6 +79,7 @@ function MainPage({
       const tempInnerWidth = window.innerWidth
       setWindowsWidth(tempInnerWidth)
       setImgWidth(document?.getElementById("image-to-download")?.getBoundingClientRect()?.width)
+      setImgHeight(document?.getElementById("image-to-download")?.getBoundingClientRect()?.height)
       if (tempInnerWidth > 1170) {
         setPositionCircleDiff(18)
         setPositionPointDiff(10)
@@ -87,7 +97,7 @@ function MainPage({
       }
       return () => clearInterval(interval);
     }, 50);
-  }, [windowsWidth, setWindowsWidth, imgWidth, setImgWidth, setPositionCircleDiff, setPositionPointDiff, setPositionBallDiff]);
+  }, [windowsWidth, setWindowsWidth, setImgWidth, setImgHeight, setPositionCircleDiff, setPositionPointDiff, setPositionBallDiff]);
   const exportAsImage = async (element, imageFileName, downloadFlag) => {
     const canvas = await html2canvas(element);
     const image = canvas.toDataURL("image/png", 1.0);
@@ -217,6 +227,54 @@ function MainPage({
     setNewBalls(nextNewBalls)
     setDragBallItem(-2)
   }
+
+
+  //////////drawPenciling lines/////////////////////////////////////////
+  const canvasRef = useRef(null);
+  const ctxRef = useRef(null);
+  const [isdrawPenciling, setIsdrawPenciling] = useState(false);
+  const [lineWidth] = useState(5);
+  const [lineColor] = useState("blue");
+
+  const startPencildrawPenciling = (e) => {
+    if(drawPencilTool!==1) return
+    ctxRef.current.beginPath();
+    ctxRef.current.moveTo(
+      e.nativeEvent.offsetX, 
+      e.nativeEvent.offsetY
+    );
+    setIsdrawPenciling(true);
+  };
+  
+  // Function for ending the drawPenciling
+  const endPencildrawPenciling = () => {
+    if(drawPencilTool!==1) return
+    ctxRef.current.closePath();
+    setIsdrawPenciling(false);
+  };
+  
+  const drawPencil = (e) => {
+    if(drawPencilTool!==1) return
+    if (!isdrawPenciling) {
+      return;
+    }
+    ctxRef.current.lineTo(
+      e.nativeEvent.offsetX, 
+      e.nativeEvent.offsetY
+    );
+      
+    ctxRef.current.stroke();
+  };
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.strokeStyle = lineColor;
+    ctx.lineWidth = lineWidth;
+    ctxRef.current = ctx;
+  }, [lineColor, lineWidth]);
+  /////////////////////////////////////////////////////////////////////////
 
   return (
     <div className="MainPage">
@@ -419,6 +477,14 @@ function MainPage({
                 })
               }
             </div>
+            <canvas
+              onMouseDown={startPencildrawPenciling}
+              onMouseUp={endPencildrawPenciling}
+              onMouseMove={drawPencil}
+              ref={canvasRef}
+              width={`${imgWidth}px`}
+              Height={`${imgHeight}px`}
+            />
           </div>
           <div className="button-line">
             <div className="circles">
@@ -440,6 +506,46 @@ function MainPage({
               </div>
             </div>
             <div className="button-group">
+              <div className={"button"} onClick={() => setdrawPencilToolMenuFlag(true)}>
+                {
+                  {
+                    0: <PointerIcon />,
+                    1: <PencilIcon />,
+                    2: <CircleIcon />,
+                    3: <SquareIcon />,
+                    4: <TypeIcon />,
+                  }[drawPencilTool]
+                }
+              </div>
+              <div className={drawPencilToolMenuFlag ? "draw-tool-menu" : "hidden"}>
+                <div className="button" onClick={() => { setdrawPencilTool(0); setdrawPencilToolMenuFlag(false) }}>
+                  <PointerIcon />
+                </div>
+                <div className="button" onClick={() => { setdrawPencilTool(1); setdrawPencilToolMenuFlag(false) }}>
+                  <PencilIcon />
+                </div>
+                <div className="button" onClick={() => { setdrawPencilTool(2); setdrawPencilToolMenuFlag(false) }}>
+                  <CircleIcon />
+                </div>
+                <div className="button" onClick={() => { setdrawPencilTool(3); setdrawPencilToolMenuFlag(false) }}>
+                  <SquareIcon />
+                </div>
+                <div className="button" onClick={() => { setdrawPencilTool(4); setdrawPencilToolMenuFlag(false) }}>
+                  <TypeIcon />
+                </div>
+                <div className="button" onClick={() => setdrawPencilToolMenuFlag(false)}>
+                  {
+                    {
+                      0: <PointerIcon />,
+                      1: <PencilIcon />,
+                      2: <CircleIcon />,
+                      3: <SquareIcon />,
+                      4: <TypeIcon />,
+                    }[drawPencilTool]
+                  }
+                </div>
+              </div>
+
               <div className="button">
                 <RotateIcon />
               </div>

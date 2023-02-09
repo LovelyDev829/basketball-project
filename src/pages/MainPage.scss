@@ -182,6 +182,12 @@
                         cursor: pointer;
                     }
                 }
+                canvas{
+                    top: 0px;
+                    left: 0px;
+                    position: absolute;
+                    // background-color: rgba(20, 243, 243, 0.247);
+                }
             }
             .button-line{
                 // background-color: aqua;
@@ -224,6 +230,10 @@
                         &.clicked{
                             background-color: #614628;
                         }
+                    }
+                    .draw-tool-menu{
+                        position: absolute;
+                        bottom: 0px;
                     }
                 }
                 .circles{
