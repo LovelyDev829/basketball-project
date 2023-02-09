@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useLayoutEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./MainPage.scss";
 import { useNavigate } from "react-router-dom";
 import fieldLine from "../assets/field-line-with-logo.png";
@@ -288,7 +288,7 @@ function MainPage({
       
     ctxRef.current.stroke();
   };
-  useLayoutEffect(() => {
+  useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     ctx.lineCap = "round";
@@ -299,7 +299,7 @@ function MainPage({
     ctx.lineWidth = 3;
     ctxRef.current = ctx;
   // }, [lineColor, lineWidth]);
-  },[]);
+  });
   /////////////////////////////////////////////////////////////////////////
 
   return (
