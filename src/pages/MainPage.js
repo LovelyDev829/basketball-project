@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useLayoutEffect, useState } from "react";
 import "./MainPage.scss";
 import { useNavigate } from "react-router-dom";
 import fieldLine from "../assets/field-line-with-logo.png";
@@ -233,16 +233,27 @@ function MainPage({
   const canvasRef = useRef(null);
   const ctxRef = useRef(null);
   const [isdrawPenciling, setIsdrawPenciling] = useState(false);
-  const [lineWidth] = useState(5);
-  const [lineColor] = useState("blue");
+  // const [lineWidth, setLineWidth] = useState(5);
+  // const [lineColor, setLineColor] = useState("blue");
 
   const startPencildrawPenciling = (e) => {
+    console.log(e)
     if(drawPencilTool!==1) return
     ctxRef.current.beginPath();
     ctxRef.current.moveTo(
       e.nativeEvent.offsetX, 
       e.nativeEvent.offsetY
     );
+    setIsdrawPenciling(true);
+  };
+  const startPencildrawPencilingByTouch = (e) => {
+    console.log(e)
+    if(drawPencilTool!==1) return
+    ctxRef.current.beginPath();
+    var rect = e.target.getBoundingClientRect();
+    var x = e.targetTouches[0].pageX - rect.left;
+    var y = e.targetTouches[0].pageY - rect.top;
+    ctxRef.current.moveTo(x,y);
     setIsdrawPenciling(true);
   };
   
@@ -265,15 +276,30 @@ function MainPage({
       
     ctxRef.current.stroke();
   };
-  useEffect(() => {
+  const drawPencilByTouch = (e) => {
+    if(drawPencilTool!==1) return
+    if (!isdrawPenciling) {
+      return;
+    }
+    var rect = e.target.getBoundingClientRect();
+    var x = e.targetTouches[0].pageX - rect.left;
+    var y = e.targetTouches[0].pageY - rect.top;
+    ctxRef.current.lineTo(x,y);
+      
+    ctxRef.current.stroke();
+  };
+  useLayoutEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
-    ctx.strokeStyle = lineColor;
-    ctx.lineWidth = lineWidth;
+    // ctx.strokeStyle = lineColor;
+    // ctx.lineWidth = lineWidth;
+    ctx.strokeStyle = "blue";
+    ctx.lineWidth = 3;
     ctxRef.current = ctx;
-  }, [lineColor, lineWidth]);
+  // }, [lineColor, lineWidth]);
+  },[]);
   /////////////////////////////////////////////////////////////////////////
 
   return (
@@ -481,9 +507,12 @@ function MainPage({
               onMouseDown={startPencildrawPenciling}
               onMouseUp={endPencildrawPenciling}
               onMouseMove={drawPencil}
+              onTouchStart={startPencildrawPencilingByTouch}
+              onTouchEnd={endPencildrawPenciling}
+              onTouchMove={drawPencilByTouch}
               ref={canvasRef}
               width={`${imgWidth}px`}
-              Height={`${imgHeight}px`}
+              height={`${imgHeight}px`}
             />
           </div>
           <div className="button-line">
