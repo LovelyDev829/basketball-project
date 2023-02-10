@@ -543,35 +543,35 @@ function MainPage({
               </div>
               <div className={drawToolMenuFlag ? "draw-tool-menu" : "hidden"}>
                 <div className="button" onClick={() => { setDrawTool(0); setDrawToolMenuFlag(false) }}
-                  // onTouchEnd={() => { setDrawTool(0); setDrawToolMenuFlag(false) }}
+                  onTouchEnd={() => { setDrawTool(0); setDrawToolMenuFlag(false) }}
                   >
                   <PointerIcon />
                 </div>
                 <div className="button" onClick={() => { setDrawTool(1); setDrawToolMenuFlag(false) }}
-                  // onTouchEnd={() => { setDrawTool(1); setDrawToolMenuFlag(false) }}
+                  onTouchEnd={() => { setDrawTool(1); setDrawToolMenuFlag(false) }}
                   >
                   <PencilIcon />
                 </div>
                 <div className="button" onClick={() => { setDrawTool(2); setDrawToolMenuFlag(false) }}
-                  // onTouchEnd={() => { setDrawTool(2); setDrawToolMenuFlag(false) }}
+                  onTouchEnd={() => { setDrawTool(2); setDrawToolMenuFlag(false) }}
                   >
                   <ArrowIcon />
                 </div>
                 <div className="button" onClick={() => { setDrawTool(3); setDrawToolMenuFlag(false) }}
-                  // onTouchEnd={() => { setDrawTool(3); setDrawToolMenuFlag(false) }}
+                  onTouchEnd={() => { setDrawTool(3); setDrawToolMenuFlag(false) }}
                   >
                   <CircleIcon />
                 </div>
                 <div className="button" onClick={() => { setDrawTool(4); setDrawToolMenuFlag(false) }}
-                  // onTouchEnd={() => { setDrawTool(4); setDrawToolMenuFlag(false) }}
+                  onTouchEnd={() => { setDrawTool(4); setDrawToolMenuFlag(false) }}
                   >
                   <SquareIcon />
                 </div>
-                <div className="button" onClick={() => { setDrawTool(5); setDrawToolMenuFlag(false) }}
-                  // onTouchEnd={() => { setDrawTool(5); setDrawToolMenuFlag(false) }}
+                {/* <div className="button" onClick={() => { setDrawTool(5); setDrawToolMenuFlag(false) }}
+                  onTouchEnd={() => { setDrawTool(5); setDrawToolMenuFlag(false) }}
                   >
                   <TypeIcon />
-                </div>
+                </div> */}
                 <div className="button" onClick={() => setDrawToolMenuFlag(false)}>
                   {
                     {

@@ -27,6 +27,8 @@ class ArrowDrawable extends Drawable {
     }
     render() {
         const points = [this.startx, this.starty, this.x, this.y];
+        // console.log(points[0], points[1], points[2], points[3])
+        if(points[0] === points[2] && points[1] === points[3]) return
         return <Arrow points={points} fill="black" stroke={strickColor} strokeWidth={strokeWidth} draggable={patterDragableFlag}/>;
     }
 }
@@ -94,7 +96,8 @@ class SceneWithDrawables extends Component {
         this.state = {
             // drawables: [],
             newDrawable: [],
-            newDrawableType: "FreePathDrawable"
+            newDrawableType: "FreePathDrawable",
+            mouseDownFlag: false
         };
     }
 
@@ -112,9 +115,10 @@ class SceneWithDrawables extends Component {
 
     handleMouseDown = e => {
         if (this.props.drawTool === 0 || this.props.drawToolMenuFlag) return
+        // console.log("mouse-down")
         const { newDrawable } = this.state;
         if (newDrawable.length === 0) {
-            const { x, y } = e.target.getStage().getPointerPosition();
+            const { x, y } = e?.target?.getStage()?.getPointerPosition();
             const newDrawable = this.getNewDrawableBasedOnType(
                 x,
                 y,
@@ -124,14 +128,18 @@ class SceneWithDrawables extends Component {
                 newDrawable: [newDrawable]
             });
         }
+        this.setState({
+            mouseDownFlag: true
+        });
     };
 
     handleMouseUp = e => {
         if (this.props.drawTool === 0 || this.props.drawToolMenuFlag) return
+        // console.log("mouse-up")
         const { newDrawable } = this.state;
         const { drawables } = this.props;
         if (newDrawable.length === 1) {
-            const { x, y } = e.target.getStage().getPointerPosition();
+            const { x, y } = e?.target?.getStage()?.getPointerPosition();
             const drawableToAdd = newDrawable[0];
             drawableToAdd.registerMovement(x, y);
             drawables.push(drawableToAdd);
@@ -141,13 +149,18 @@ class SceneWithDrawables extends Component {
             });
             this.props.setDrawables(drawables)
         }
+        this.setState({
+            mouseDownFlag: false
+        });
     };
 
     handleMouseMove = e => {
         if (this.props.drawTool === 0 || this.props.drawToolMenuFlag) return
+        if (!this.state.mouseDownFlag) return
+        // console.log("mouse-move")
         const { newDrawable } = this.state;
         if (newDrawable.length === 1) {
-            const { x, y } = e.target.getStage().getPointerPosition();
+            const { x, y } = e?.target?.getStage()?.getPointerPosition();
             const updatedNewDrawable = newDrawable[0];
             updatedNewDrawable.registerMovement(x, y);
             this.setState({
