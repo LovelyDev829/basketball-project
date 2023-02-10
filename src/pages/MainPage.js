@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./MainPage.scss";
 import { useNavigate } from "react-router-dom";
 import fieldLine from "../assets/field-line-with-logo.png";
@@ -31,13 +31,15 @@ import { ReactComponent as RotateIcon } from "../assets/svg/rotate-ccw.svg";
 import { ReactComponent as UserIcon } from "../assets/svg/user.svg";
 
 import { ReactComponent as PencilIcon } from "../assets/svg/pencil.svg";
-import { ReactComponent as PointerIcon } from "../assets/svg/mouse-pointer.svg";
+import { ReactComponent as ArrowIcon } from "../assets/svg/mouse-pointer.svg";
+import { ReactComponent as PointerIcon } from "../assets/svg/x.svg";
 import { ReactComponent as CircleIcon } from "../assets/svg/circle.svg";
 import { ReactComponent as SquareIcon } from "../assets/svg/square.svg";
 import { ReactComponent as TypeIcon } from "../assets/svg/type.svg";
 
 import mainLogo from "../assets/logo.png";
 import html2canvas from "html2canvas";
+import SceneWithDrawables from "../components/SceneWithDrawables";
 var onceFlag = true
 
 function MainPage({
@@ -64,8 +66,9 @@ function MainPage({
   const [rosterShowFlag, setRosterShowFlag] = useState(false)
   const [currentNumbers, setCurrentNumbers] = useState([1, 1, 1, 1, 1, 1, 1, 1])
   const colorArray = ['red', 'blue', 'brown', 'yellow', 'green', 'white', 'grey', 'black']
-  const [drawPencilToolMenuFlag, setdrawPencilToolMenuFlag] = useState(false)
-  const [drawPencilTool, setdrawPencilTool] = useState(0)
+  const [drawToolMenuFlag, setDrawToolMenuFlag] = useState(false)
+  const [drawTool, setDrawTool] = useState(0)
+  const [drawables, setDrawables] = useState([])
 
   useEffect(() => {
     if (!document.mozFullScreen && !document.webkitIsFullScreen)
@@ -230,76 +233,76 @@ function MainPage({
 
 
   //////////drawPenciling lines/////////////////////////////////////////
-  const canvasRef = useRef(null);
-  const ctxRef = useRef(null);
-  const [isdrawPenciling, setIsdrawPenciling] = useState(false);
-  // const [lineWidth, setLineWidth] = useState(5);
-  // const [lineColor, setLineColor] = useState("blue");
+  // const canvasRef = useRef(null);
+  // const ctxRef = useRef(null);
+  // const [isdrawPenciling, setIsdrawPenciling] = useState(false);
+  // // const [lineWidth, setLineWidth] = useState(5);
+  // // const [lineColor, setLineColor] = useState("blue");
 
-  const startPencildrawPenciling = (e) => {
-    console.log(e)
-    if(drawPencilTool!==1) return
-    ctxRef.current.beginPath();
-    ctxRef.current.moveTo(
-      e.nativeEvent.offsetX, 
-      e.nativeEvent.offsetY
-    );
-    setIsdrawPenciling(true);
-  };
-  const startPencildrawPencilingByTouch = (e) => {
-    console.log(e)
-    if(drawPencilTool!==1) return
-    ctxRef.current.beginPath();
-    var rect = e.target.getBoundingClientRect();
-    var x = e.targetTouches[0].pageX - rect.left;
-    var y = e.targetTouches[0].pageY - rect.top;
-    ctxRef.current.moveTo(x,y);
-    setIsdrawPenciling(true);
-  };
-  
-  // Function for ending the drawPenciling
-  const endPencildrawPenciling = () => {
-    if(drawPencilTool!==1) return
-    ctxRef.current.closePath();
-    setIsdrawPenciling(false);
-  };
-  
-  const drawPencil = (e) => {
-    if(drawPencilTool!==1) return
-    if (!isdrawPenciling) {
-      return;
-    }
-    ctxRef.current.lineTo(
-      e.nativeEvent.offsetX, 
-      e.nativeEvent.offsetY
-    );
-      
-    ctxRef.current.stroke();
-  };
-  const drawPencilByTouch = (e) => {
-    if(drawPencilTool!==1) return
-    if (!isdrawPenciling) {
-      return;
-    }
-    var rect = e.target.getBoundingClientRect();
-    var x = e.targetTouches[0].pageX - rect.left;
-    var y = e.targetTouches[0].pageY - rect.top;
-    ctxRef.current.lineTo(x,y);
-      
-    ctxRef.current.stroke();
-  };
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-    // ctx.strokeStyle = lineColor;
-    // ctx.lineWidth = lineWidth;
-    ctx.strokeStyle = "blue";
-    ctx.lineWidth = 3;
-    ctxRef.current = ctx;
-  // }, [lineColor, lineWidth]);
-  });
+  // const startPencildrawPenciling = (e) => {
+  //   console.log(e)
+  //   if(drawTool!==1) return
+  //   ctxRef.current.beginPath();
+  //   ctxRef.current.moveTo(
+  //     e.nativeEvent.offsetX, 
+  //     e.nativeEvent.offsetY
+  //   );
+  //   setIsdrawPenciling(true);
+  // };
+  // const startPencildrawPencilingByTouch = (e) => {
+  //   console.log(e)
+  //   if(drawTool!==1) return
+  //   ctxRef.current.beginPath();
+  //   var rect = e.target.getBoundingClientRect();
+  //   var x = e.targetTouches[0].pageX - rect.left;
+  //   var y = e.targetTouches[0].pageY - rect.top;
+  //   ctxRef.current.moveTo(x,y);
+  //   setIsdrawPenciling(true);
+  // };
+
+  // // Function for ending the drawPenciling
+  // const endPencildrawPenciling = () => {
+  //   if(drawTool!==1) return
+  //   ctxRef.current.closePath();
+  //   setIsdrawPenciling(false);
+  // };
+
+  // const drawPencil = (e) => {
+  //   if(drawTool!==1) return
+  //   if (!isdrawPenciling) {
+  //     return;
+  //   }
+  //   ctxRef.current.lineTo(
+  //     e.nativeEvent.offsetX, 
+  //     e.nativeEvent.offsetY
+  //   );
+
+  //   ctxRef.current.stroke();
+  // };
+  // const drawPencilByTouch = (e) => {
+  //   if(drawTool!==1) return
+  //   if (!isdrawPenciling) {
+  //     return;
+  //   }
+  //   var rect = e.target.getBoundingClientRect();
+  //   var x = e.targetTouches[0].pageX - rect.left;
+  //   var y = e.targetTouches[0].pageY - rect.top;
+  //   ctxRef.current.lineTo(x,y);
+
+  //   ctxRef.current.stroke();
+  // };
+  // useEffect(() => {
+  //   const canvas = canvasRef.current;
+  //   const ctx = canvas.getContext("2d");
+  //   ctx.lineCap = "round";
+  //   ctx.lineJoin = "round";
+  //   // ctx.strokeStyle = lineColor;
+  //   // ctx.lineWidth = lineWidth;
+  //   ctx.strokeStyle = "blue";
+  //   ctx.lineWidth = 3;
+  //   ctxRef.current = ctx;
+  // // }, [lineColor, lineWidth]);
+  // });
   /////////////////////////////////////////////////////////////////////////
 
   return (
@@ -307,8 +310,8 @@ function MainPage({
       <div className="main">
         <div className="board"
           onClick={() => { if (rosterShowFlag) setRosterShowFlag(false) }}
-          onMouseUp={() => { circleReleased(); pointReleased(); ballReleased() }}
-          onTouchEnd={() => { circleReleased(); pointReleased(); ballReleased() }}
+          onMouseUp={() => { circleReleased(); pointReleased(); ballReleased(); setDrawToolMenuFlag(false) }}
+          onTouchEnd={() => { circleReleased(); pointReleased(); ballReleased(); setDrawToolMenuFlag(false) }}
           onMouseLeave={() => { circleReleased(); pointReleased(); ballReleased() }}
           onMouseMove={(e) => setPositionByMouse(e)}
           onTouchMove={(e) => setPositionByTouch(e)}
@@ -371,7 +374,7 @@ function MainPage({
               src={fieldLineFlag ? fieldLine : fieldWithoutLine}
               alt="BACKGROUND"
             />
-            <div id="new-circles">
+            <div id="new-circles" style={(drawTool !== 0) ? { pointerEvents: 'none' } : {}}>
               {
                 newCircles?.map((item, index) => {
                   const defaultStyle = { top: `${item?.mousePosY * (imgWidth / item?.imgWidth) - positionCircleDiff}px`, left: `${item?.mousePosX * (imgWidth / item?.imgWidth) - positionCircleDiff}px` }
@@ -503,17 +506,8 @@ function MainPage({
                 })
               }
             </div>
-            <canvas
-              onMouseDown={startPencildrawPenciling}
-              onMouseUp={endPencildrawPenciling}
-              onMouseMove={drawPencil}
-              onTouchStart={startPencildrawPencilingByTouch}
-              onTouchEnd={endPencildrawPenciling}
-              onTouchMove={drawPencilByTouch}
-              ref={canvasRef}
-              width={`${imgWidth}px`}
-              height={`${imgHeight}px`}
-            />
+            <SceneWithDrawables width={imgWidth} height={imgHeight} drawTool={drawTool} color={"green"}
+              drawables={drawables} setDrawables={setDrawables} drawToolMenuFlag={drawToolMenuFlag}/>
           </div>
           <div className="button-line">
             <div className="circles">
@@ -535,50 +529,66 @@ function MainPage({
               </div>
             </div>
             <div className="button-group">
-              <div className={"button"} onClick={() => setdrawPencilToolMenuFlag(true)}>
+              <div className={"button"} onClick={() => setDrawToolMenuFlag(!drawToolMenuFlag)}>
                 {
                   {
                     0: <PointerIcon />,
                     1: <PencilIcon />,
-                    2: <CircleIcon />,
-                    3: <SquareIcon />,
-                    4: <TypeIcon />,
-                  }[drawPencilTool]
+                    2: <ArrowIcon />,
+                    3: <CircleIcon />,
+                    4: <SquareIcon />,
+                    5: <TypeIcon />,
+                  }[drawTool]
                 }
               </div>
-              <div className={drawPencilToolMenuFlag ? "draw-tool-menu" : "hidden"}>
-                <div className="button" onClick={() => { setdrawPencilTool(0); setdrawPencilToolMenuFlag(false) }}>
+              <div className={drawToolMenuFlag ? "draw-tool-menu" : "hidden"}>
+                <div className="button" onClick={() => { setDrawTool(0); setDrawToolMenuFlag(false) }}
+                  // onTouchEnd={() => { setDrawTool(0); setDrawToolMenuFlag(false) }}
+                  >
                   <PointerIcon />
                 </div>
-                <div className="button" onClick={() => { setdrawPencilTool(1); setdrawPencilToolMenuFlag(false) }}>
+                <div className="button" onClick={() => { setDrawTool(1); setDrawToolMenuFlag(false) }}
+                  // onTouchEnd={() => { setDrawTool(1); setDrawToolMenuFlag(false) }}
+                  >
                   <PencilIcon />
                 </div>
-                <div className="button" onClick={() => { setdrawPencilTool(2); setdrawPencilToolMenuFlag(false) }}>
+                <div className="button" onClick={() => { setDrawTool(2); setDrawToolMenuFlag(false) }}
+                  // onTouchEnd={() => { setDrawTool(2); setDrawToolMenuFlag(false) }}
+                  >
+                  <ArrowIcon />
+                </div>
+                <div className="button" onClick={() => { setDrawTool(3); setDrawToolMenuFlag(false) }}
+                  // onTouchEnd={() => { setDrawTool(3); setDrawToolMenuFlag(false) }}
+                  >
                   <CircleIcon />
                 </div>
-                <div className="button" onClick={() => { setdrawPencilTool(3); setdrawPencilToolMenuFlag(false) }}>
+                <div className="button" onClick={() => { setDrawTool(4); setDrawToolMenuFlag(false) }}
+                  // onTouchEnd={() => { setDrawTool(4); setDrawToolMenuFlag(false) }}
+                  >
                   <SquareIcon />
                 </div>
-                <div className="button" onClick={() => { setdrawPencilTool(4); setdrawPencilToolMenuFlag(false) }}>
+                <div className="button" onClick={() => { setDrawTool(5); setDrawToolMenuFlag(false) }}
+                  // onTouchEnd={() => { setDrawTool(5); setDrawToolMenuFlag(false) }}
+                  >
                   <TypeIcon />
                 </div>
-                <div className="button" onClick={() => setdrawPencilToolMenuFlag(false)}>
+                <div className="button" onClick={() => setDrawToolMenuFlag(false)}>
                   {
                     {
                       0: <PointerIcon />,
                       1: <PencilIcon />,
-                      2: <CircleIcon />,
-                      3: <SquareIcon />,
-                      4: <TypeIcon />,
-                    }[drawPencilTool]
+                      2: <ArrowIcon />,
+                      3: <CircleIcon />,
+                      4: <SquareIcon />,
+                      5: <TypeIcon />,
+                    }[drawTool]
                   }
                 </div>
               </div>
-
               <div className="button">
                 <RotateIcon />
               </div>
-              <div className="button" onClick={() => { setNewCircles([]); setNewPoints([]); setNewBalls([]) }}>
+              <div className="button" onClick={() => { setNewCircles([]); setNewPoints([]); setNewBalls([]); setDrawables([]) }}>
                 <TrashIcon />
               </div>
             </div>

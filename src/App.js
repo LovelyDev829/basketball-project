@@ -1,4 +1,5 @@
 import "./App.scss";
+import React  from 'react';
 import Routing from "./Routing";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 
